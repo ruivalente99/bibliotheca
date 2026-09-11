@@ -13,10 +13,34 @@ import {
   HelpCircle,
 } from "lucide-react";
 import { CanvasTooltip } from "./CanvasTooltip";
-import { ShortcutsLegendModal } from "./ShortcutsLegendModal";
+import { ShortcutsLegendModal, ShortcutItem } from "./ShortcutsLegendModal";
 import { cn } from "../ui/utils";
 
 export type DockEdge = "bottom" | "top" | "left" | "right";
+
+export interface DockableToolbarLabels {
+  selectMode?: React.ReactNode;
+  handMode?: React.ReactNode;
+  zoomOut?: React.ReactNode;
+  zoomIn?: React.ReactNode;
+  resetZoom?: React.ReactNode;
+  fitScreen?: React.ReactNode;
+  toggleGrid?: React.ReactNode;
+  shortcutsHelp?: React.ReactNode;
+  dragGripTitle?: string;
+  shortcutsModalTitle?: React.ReactNode;
+}
+
+export interface DockableToolbarClassNames {
+  root?: string;
+  grip?: string;
+  modeGroup?: string;
+  button?: string;
+  buttonActive?: string;
+  zoomText?: string;
+  divider?: string;
+  extraActions?: string;
+}
 
 export interface DockableToolbarProps {
   /** Current zoom level factor (e.g. 1.0 = 100%) */
@@ -43,7 +67,12 @@ export interface DockableToolbarProps {
   containerRef?: React.RefObject<HTMLDivElement | null>;
   /** Custom export buttons or extra action slot */
   extraActions?: React.ReactNode;
+  /** Configurable labels for tooltips and accessible titles */
+  labels?: DockableToolbarLabels;
+  /** Optional keyboard shortcuts list displayed in help modal */
+  shortcuts?: ShortcutItem[];
   className?: string;
+  classNames?: DockableToolbarClassNames;
 }
 
 export function DockableToolbar({
@@ -59,11 +88,27 @@ export function DockableToolbar({
   defaultDockEdge = "bottom",
   containerRef,
   extraActions,
+  labels = {},
+  shortcuts = [],
   className = "",
+  classNames = {},
 }: DockableToolbarProps) {
   const [dockEdge, setDockEdge] = useState<DockEdge>(defaultDockEdge);
   const [isDragging, setIsDragging] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+
+  const t: Required<DockableToolbarLabels> = {
+    selectMode: labels.selectMode ?? "Select tool",
+    handMode: labels.handMode ?? "Hand pan tool",
+    zoomOut: labels.zoomOut ?? "Zoom out",
+    zoomIn: labels.zoomIn ?? "Zoom in",
+    resetZoom: labels.resetZoom ?? "Reset 100%",
+    fitScreen: labels.fitScreen ?? "Fit to screen",
+    toggleGrid: labels.toggleGrid ?? "Toggle grid",
+    shortcutsHelp: labels.shortcutsHelp ?? "Shortcuts",
+    dragGripTitle: labels.dragGripTitle ?? "Drag to dock / Double-click to cycle",
+    shortcutsModalTitle: labels.shortcutsModalTitle ?? "Keyboard Shortcuts",
+  };
 
   const cycleDockEdge = () => {
     setDockEdge((prev) => {
@@ -131,53 +176,65 @@ export function DockableToolbar({
           "border-stone-200/90 dark:border-[#30363d]",
           "text-stone-700 dark:text-[#c9d1d9]",
           dockPositionClasses,
-          className
+          className,
+          classNames.root
         )}
       >
         {/* Drag Handle Grip */}
         <div
           role="button"
-          aria-label="Drag toolbar to edge, or double click to cycle"
-          title="Drag to dock on edge / Double-click to cycle position"
+          aria-label={t.dragGripTitle}
+          title={t.dragGripTitle}
           onPointerDown={handleGripPointerDown}
           onPointerMove={handleGripPointerMove}
           onPointerUp={handleGripPointerUp}
           onDoubleClick={cycleDockEdge}
-          className="p-1 rounded-full cursor-grab active:cursor-grabbing text-stone-400 hover:text-stone-700 dark:hover:text-[#f0f3f6] transition-colors shrink-0"
+          className={cn(
+            "p-1 rounded-full cursor-grab active:cursor-grabbing text-stone-400 hover:text-stone-700 dark:hover:text-[#f0f3f6] transition-colors shrink-0",
+            classNames.grip
+          )}
         >
           <GripVertical size={13} />
         </div>
 
         {/* Navigation Mode Switcher (Pointer vs Hand) */}
         {onToolModeChange && (
-          <div className={cn("flex items-center gap-0.5 p-0.5 rounded-full bg-stone-100 dark:bg-[#21262d]", isVertical ? "flex-col" : "flex-row")}>
-            <CanvasTooltip label="Modo Seleção" shortcut="V" side={tooltipSide}>
+          <div
+            className={cn(
+              "flex items-center gap-0.5 p-0.5 rounded-full bg-stone-100 dark:bg-[#21262d]",
+              isVertical ? "flex-col" : "flex-row",
+              classNames.modeGroup
+            )}
+          >
+            <CanvasTooltip label={t.selectMode} shortcut="V" side={tooltipSide}>
               <button
                 type="button"
                 onClick={() => onToolModeChange("pointer")}
                 className={cn(
                   "p-1.5 rounded-full transition-all cursor-pointer",
                   toolMode === "pointer"
-                    ? "bg-white dark:bg-[#30363d] text-amber-600 dark:text-amber-400 shadow-xs"
-                    : "text-stone-400 hover:text-stone-700 dark:hover:text-[#f0f3f6]"
+                    ? cn("bg-white dark:bg-[#30363d] text-amber-600 dark:text-amber-400 shadow-xs", classNames.buttonActive)
+                    : "text-stone-400 hover:text-stone-700 dark:hover:text-[#f0f3f6]",
+                  classNames.button
                 )}
-                aria-label="Selection Tool"
+                aria-label="Pointer Tool"
               >
                 <MousePointer size={13} />
               </button>
             </CanvasTooltip>
 
-            <CanvasTooltip label="Modo Mão (Pan livre)" shortcut="Space" side={tooltipSide}>
+            <CanvasTooltip label={t.handMode} shortcut="Space" side={tooltipSide}>
               <button
                 type="button"
                 onClick={() => onToolModeChange("hand")}
                 className={cn(
                   "p-1.5 rounded-full transition-all cursor-pointer",
                   toolMode === "hand"
-                    ? "bg-white dark:bg-[#30363d] text-amber-600 dark:text-amber-400 shadow-xs"
-                    : "text-stone-400 hover:text-stone-700 dark:hover:text-[#f0f3f6]"
+                    ? cn("bg-white dark:bg-[#30363d] text-amber-600 dark:text-amber-400 shadow-xs", classNames.buttonActive)
+                    : "text-stone-400 hover:text-stone-700 dark:hover:text-[#f0f3f6]",
+                  classNames.button
                 )}
-                aria-label="Hand Pan Tool"
+                aria-label="Hand Tool"
               >
                 <Hand size={13} />
               </button>
@@ -185,29 +242,29 @@ export function DockableToolbar({
           </div>
         )}
 
-        <div className={cn("bg-stone-200 dark:bg-[#30363d]", isVertical ? "w-4 h-[1px] my-0.5" : "w-[1px] h-4 mx-0.5")} />
+        <div className={cn("bg-stone-200 dark:bg-[#30363d]", isVertical ? "w-4 h-[1px] my-0.5" : "w-[1px] h-4 mx-0.5", classNames.divider)} />
 
         {/* Zoom Controls */}
-        <CanvasTooltip label="Reduzir Zoom" shortcut="-" side={tooltipSide}>
+        <CanvasTooltip label={t.zoomOut} shortcut="-" side={tooltipSide}>
           <button
             type="button"
             onClick={onZoomOut}
-            className="p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer"
+            className={cn("p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer", classNames.button)}
             aria-label="Zoom Out"
           >
             <ZoomOut size={13} />
           </button>
         </CanvasTooltip>
 
-        <span className="font-mono text-[11px] font-bold min-w-[36px] text-center text-stone-600 dark:text-[#8b949e]">
+        <span className={cn("font-mono text-[11px] font-bold min-w-[36px] text-center text-stone-600 dark:text-[#8b949e]", classNames.zoomText)}>
           {Math.round(zoom * 100)}%
         </span>
 
-        <CanvasTooltip label="Aumentar Zoom" shortcut="+" side={tooltipSide}>
+        <CanvasTooltip label={t.zoomIn} shortcut="+" side={tooltipSide}>
           <button
             type="button"
             onClick={onZoomIn}
-            className="p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer"
+            className={cn("p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer", classNames.button)}
             aria-label="Zoom In"
           >
             <ZoomIn size={13} />
@@ -215,12 +272,12 @@ export function DockableToolbar({
         </CanvasTooltip>
 
         {onFitToScreen && (
-          <CanvasTooltip label="Ajustar à Janela" shortcut="F" side={tooltipSide}>
+          <CanvasTooltip label={t.fitScreen} shortcut="F" side={tooltipSide}>
             <button
               type="button"
               onClick={onFitToScreen}
-              className="p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer"
-              aria-label="Fit to screen"
+              className={cn("p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer", classNames.button)}
+              aria-label="Fit Screen"
             >
               <Maximize2 size={13} />
             </button>
@@ -228,11 +285,11 @@ export function DockableToolbar({
         )}
 
         {onResetView && (
-          <CanvasTooltip label="Repor Escala 100%" shortcut="0" side={tooltipSide}>
+          <CanvasTooltip label={t.resetZoom} shortcut="0" side={tooltipSide}>
             <button
               type="button"
               onClick={onResetView}
-              className="p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer"
+              className={cn("p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer", classNames.button)}
               aria-label="Reset Zoom"
             >
               <RotateCcw size={13} />
@@ -243,18 +300,19 @@ export function DockableToolbar({
         {/* Grid toggle */}
         {onToggleGrid && (
           <>
-            <div className={cn("bg-stone-200 dark:bg-[#30363d]", isVertical ? "w-4 h-[1px] my-0.5" : "w-[1px] h-4 mx-0.5")} />
-            <CanvasTooltip label="Alternar Grelha" shortcut="G" side={tooltipSide}>
+            <div className={cn("bg-stone-200 dark:bg-[#30363d]", isVertical ? "w-4 h-[1px] my-0.5" : "w-[1px] h-4 mx-0.5", classNames.divider)} />
+            <CanvasTooltip label={t.toggleGrid} shortcut="G" side={tooltipSide}>
               <button
                 type="button"
                 onClick={onToggleGrid}
                 className={cn(
                   "p-1.5 rounded-full transition-all cursor-pointer",
                   showGrid
-                    ? "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 font-bold"
-                    : "hover:bg-stone-100 dark:hover:bg-[#21262d]"
+                    ? cn("bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 font-bold", classNames.buttonActive)
+                    : "hover:bg-stone-100 dark:hover:bg-[#21262d]",
+                  classNames.button
                 )}
-                aria-label="Toggle grid"
+                aria-label="Toggle Grid"
               >
                 <Grid size={13} />
               </button>
@@ -265,28 +323,36 @@ export function DockableToolbar({
         {/* Extra Action Buttons slot (e.g. PDF download, JSON, etc.) */}
         {extraActions && (
           <>
-            <div className={cn("bg-stone-200 dark:bg-[#30363d]", isVertical ? "w-4 h-[1px] my-0.5" : "w-[1px] h-4 mx-0.5")} />
-            <div className={cn("flex items-center gap-1", isVertical ? "flex-col" : "flex-row")}>
+            <div className={cn("bg-stone-200 dark:bg-[#30363d]", isVertical ? "w-4 h-[1px] my-0.5" : "w-[1px] h-4 mx-0.5", classNames.divider)} />
+            <div className={cn("flex items-center gap-1", isVertical ? "flex-col" : "flex-row", classNames.extraActions)}>
               {extraActions}
             </div>
           </>
         )}
 
         {/* Help / Shortcuts Button */}
-        <div className={cn("bg-stone-200 dark:bg-[#30363d]", isVertical ? "w-4 h-[1px] my-0.5" : "w-[1px] h-4 mx-0.5")} />
-        <CanvasTooltip label="Atalhos do Teclado" shortcut="?" side={tooltipSide}>
+        <div className={cn("bg-stone-200 dark:bg-[#30363d]", isVertical ? "w-4 h-[1px] my-0.5" : "w-[1px] h-4 mx-0.5", classNames.divider)} />
+        <CanvasTooltip label={t.shortcutsHelp} shortcut="?" side={tooltipSide}>
           <button
             type="button"
             onClick={() => setIsHelpOpen(true)}
-            className="p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
-            aria-label="Keyboard shortcuts"
+            className={cn(
+              "p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer",
+              classNames.button
+            )}
+            aria-label="Shortcuts"
           >
             <HelpCircle size={13} />
           </button>
         </CanvasTooltip>
       </div>
 
-      <ShortcutsLegendModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
+      <ShortcutsLegendModal
+        isOpen={isHelpOpen}
+        onClose={() => setIsHelpOpen(false)}
+        title={t.shortcutsModalTitle}
+        shortcuts={shortcuts}
+      />
     </>
   );
 }

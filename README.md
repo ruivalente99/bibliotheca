@@ -24,9 +24,9 @@ Bibliotheca provides 4 clean modular subpath exports:
 ### 1. Install
 
 ```bash
-npm install @valentium/bibliotheca
+bun add @valentium/bibliotheca
 # or link locally:
-npm install @valentium/bibliotheca@file:../bibliotheca
+bun add @valentium/bibliotheca@file:../bibliotheca
 ```
 
 ### 2. Configure Tailwind CSS v4
@@ -63,31 +63,44 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ---
 
+## 🎨 Pure Dumb Component Architecture
+
+All components in Bibliotheca follow two core principles:
+1. **Zero hardcoded labels**: Every user-facing string, tooltip, ARIA label, and button text is passed via props (with sensible fallback defaults where appropriate, but fully customizable). This ensures total internationalization (i18n) freedom across English, Portuguese, Latin, or any locale.
+2. **Complete styling overrides**: Every component accepts a root `className` and fine-grained slot-based `classNames?: { [slot]: string }` prop, enabling consumers to customize headers, badges, actions, contents, pills, and dropdowns with Tailwind utilities without fighting internal CSS.
+
+---
+
 ## 🛠️ Storybook Development & Visual Testing
 
 Bibliotheca includes an interactive **Storybook 8** setup with live dark/light mode toggling, accessibility auditing (`addon-a11y`), and interactive component controls.
 
 ```bash
 # Start Storybook dev server
-npm run storybook
+bun run storybook
 
 # Build static Storybook documentation
-npm run build-storybook
+bun run build-storybook
 ```
 
 ---
 
-## 🧪 Testing & Build
+## 🧪 Testing & Quality Assurance
+
+Bibliotheca is tested with both Vitest unit tests and Playwright end-to-end + WCAG 2.1 AA accessibility audits via `@axe-core/playwright`.
 
 ```bash
-# Run Vitest test suite
-npm run test
+# Run Vitest unit test suite
+bun run test
+
+# Run Playwright E2E and WCAG 2.1 AA a11y test suite
+bun run test:e2e
 
 # Run TypeScript typecheck
-npm run typecheck
+bun run typecheck
 
 # Build ESM & CJS distribution bundles with .d.ts
-npm run build
+bun run build
 ```
 
 ---
@@ -95,3 +108,4 @@ npm run build
 ## 📜 License
 
 MIT © [Rui Valente](https://github.com/ruivalente99)
+

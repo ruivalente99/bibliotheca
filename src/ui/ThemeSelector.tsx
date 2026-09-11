@@ -6,38 +6,64 @@ import { Sun, Moon, Laptop, ChevronDown } from "lucide-react";
 import { cn } from "./utils";
 
 export interface ThemeSelectorLabels {
-  light?: string;
-  dark?: string;
-  system?: string;
+  light?: React.ReactNode;
+  dark?: React.ReactNode;
+  system?: React.ReactNode;
   toggleTitle?: string;
+  ariaLabel?: string;
+}
+
+export interface ThemeSelectorClassNames {
+  root?: string;
+  trigger?: string;
+  icon?: string;
+  label?: string;
+  chevron?: string;
+  dropdown?: string;
+  item?: string;
+  itemActive?: string;
+  itemInactive?: string;
 }
 
 export interface ThemeSelectorProps {
   /** Display variant: 'dropdown' with label or compact 'toggle' button */
   variant?: "dropdown" | "toggle";
-  /** Custom labels for i18n support */
+  /** Labels for i18n support */
   labels?: ThemeSelectorLabels;
-  /** Extra CSS classes */
+  /** Root class name */
   className?: string;
+  /** Granular slot class overrides */
+  classNames?: ThemeSelectorClassNames;
+  /** Custom icons map */
+  icons?: {
+    light?: React.ComponentType<{ size?: number; className?: string }>;
+    dark?: React.ComponentType<{ size?: number; className?: string }>;
+    system?: React.ComponentType<{ size?: number; className?: string }>;
+  };
 }
-
-const DEFAULT_LABELS: Required<ThemeSelectorLabels> = {
-  light: "Light",
-  dark: "Dark",
-  system: "System",
-  toggleTitle: "Toggle color theme",
-};
 
 export function ThemeSelector({
   variant = "dropdown",
   labels = {},
   className = "",
+  classNames = {},
+  icons = {},
 }: ThemeSelectorProps) {
   const { theme, setTheme, resolvedTheme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const t = { ...DEFAULT_LABELS, ...labels };
+  const LightIcon = icons.light || Sun;
+  const DarkIcon = icons.dark || Moon;
+  const SystemIcon = icons.system || Laptop;
+
+  const t: ThemeSelectorLabels = {
+    light: labels.light ?? "Light",
+    dark: labels.dark ?? "Dark",
+    system: labels.system ?? "System",
+    toggleTitle: labels.toggleTitle ?? "",
+    ariaLabel: labels.ariaLabel,
+  };
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -66,58 +92,71 @@ export function ThemeSelector({
           "text-stone-600 dark:text-stone-300",
           "hover:text-amber-600 dark:hover:text-amber-400 hover:border-amber-300 dark:hover:border-amber-500/50",
           "transition-all duration-200 active:scale-95 cursor-pointer",
-          className
+          className,
+          classNames.root,
+          classNames.trigger
         )}
-        aria-label={t.toggleTitle}
-        title={t.toggleTitle}
+        aria-label={t.toggleTitle || t.ariaLabel || "Toggle theme"}
+        title={t.toggleTitle || undefined}
       >
         {resolvedTheme === "dark" ? (
-          <Sun className="w-4 h-4 text-amber-400 animate-in spin-in-180 duration-300" />
+          <LightIcon size={16} className={cn("text-amber-400 animate-in spin-in-180 duration-300", classNames.icon)} />
         ) : (
-          <Moon className="w-4 h-4 text-stone-600 animate-in spin-in-180 duration-300" />
+          <DarkIcon size={16} className={cn("text-stone-600 animate-in spin-in-180 duration-300", classNames.icon)} />
         )}
       </button>
     );
   }
 
   // Variant: Dropdown Menu
-  const options: Array<{ id: ThemeMode; label: string; icon: typeof Sun }> = [
-    { id: "light", label: t.light, icon: Sun },
-    { id: "dark", label: t.dark, icon: Moon },
-    { id: "system", label: t.system, icon: Laptop },
+  const options: Array<{
+    id: ThemeMode;
+    label: React.ReactNode;
+    icon: React.ComponentType<{ size?: number; className?: string }>;
+  }> = [
+    { id: "light", label: t.light, icon: LightIcon },
+    { id: "dark", label: t.dark, icon: DarkIcon },
+    { id: "system", label: t.system, icon: SystemIcon },
   ];
 
-  const CurrentIcon = resolvedTheme === "dark" ? Moon : Sun;
+  const CurrentIcon = resolvedTheme === "dark" ? DarkIcon : LightIcon;
   const currentLabel = options.find((o) => o.id === theme)?.label || theme;
 
   return (
-    <div className={cn("relative inline-block", className)} ref={dropdownRef}>
+    <div className={cn("relative inline-block", className, classNames.root)} ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        aria-label={`Theme: ${currentLabel}`}
+        aria-label={t.ariaLabel || "Select theme"}
         aria-expanded={isOpen}
         className={cn(
           "flex items-center gap-1.5 px-3 py-1.5 rounded-full",
           "border border-stone-200 dark:border-[#363d47]",
           "bg-white dark:bg-[#21262d] hover:bg-stone-50 dark:hover:bg-[#30363d]",
           "text-stone-700 dark:text-[#f0f3f6] text-xs font-semibold shadow-2xs",
-          "transition-all duration-150 cursor-pointer"
+          "transition-all duration-150 cursor-pointer",
+          classNames.trigger
         )}
       >
-        <CurrentIcon size={13} className="text-amber-600 dark:text-amber-400 shrink-0" />
-        <span className="capitalize font-mono text-[11.5px]">{currentLabel}</span>
+        <CurrentIcon size={13} className={cn("text-amber-600 dark:text-amber-400 shrink-0", classNames.icon)} />
+        <span className={cn("capitalize font-mono text-[11.5px]", classNames.label)}>{currentLabel}</span>
         <ChevronDown
           size={11}
           className={cn(
             "text-stone-400 dark:text-[#8b949e] transition-transform duration-150",
-            isOpen && "rotate-180"
+            isOpen && "rotate-180",
+            classNames.chevron
           )}
         />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-1.5 w-40 bg-white dark:bg-[#161b22] rounded-2xl shadow-xl border border-stone-200 dark:border-[#30363d] p-1.5 z-50 animate-in fade-in duration-100">
+        <div
+          className={cn(
+            "absolute right-0 mt-1.5 w-40 bg-white dark:bg-[#161b22] rounded-2xl shadow-xl border border-stone-200 dark:border-[#30363d] p-1.5 z-50 animate-in fade-in duration-100",
+            classNames.dropdown
+          )}
+        >
           {options.map((opt) => {
             const Icon = opt.icon;
             const isSelected = theme === opt.id;
@@ -132,8 +171,9 @@ export function ThemeSelector({
                 className={cn(
                   "w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-left transition-colors cursor-pointer",
                   isSelected
-                    ? "bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300"
-                    : "text-stone-700 dark:text-[#c9d1d9] hover:bg-stone-100 dark:hover:bg-[#21262d]"
+                    ? cn("bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300", classNames.itemActive)
+                    : cn("text-stone-700 dark:text-[#c9d1d9] hover:bg-stone-100 dark:hover:bg-[#21262d]", classNames.itemInactive),
+                  classNames.item
                 )}
               >
                 <Icon

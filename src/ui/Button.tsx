@@ -4,6 +4,13 @@ import React from "react";
 import { Loader2 } from "lucide-react";
 import { cn } from "./utils";
 
+export interface ButtonClassNames {
+  root?: string;
+  spinner?: string;
+  iconLeft?: string;
+  iconRight?: string;
+}
+
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual style variant */
   variant?: "primary" | "secondary" | "ghost" | "danger" | "pill";
@@ -15,6 +22,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   iconLeft?: React.ReactNode;
   /** Optional icon component rendered on the right */
   iconRight?: React.ReactNode;
+  /** Granular class overrides for internal sub-elements */
+  classNames?: ButtonClassNames;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -28,6 +37,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       iconLeft,
       iconRight,
       className = "",
+      classNames = {},
       ...props
     },
     ref
@@ -59,23 +69,20 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         disabled={disabled || loading}
+        aria-busy={loading}
         className={cn(
           baseClasses,
           variantClasses[variant],
           variant === "pill" ? "rounded-full" : sizeClasses[size],
-          className
+          className,
+          classNames.root
         )}
         {...props}
       >
-        {loading ? (
-          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-        ) : (
-          <>
-            {iconLeft && <span className="shrink-0">{iconLeft}</span>}
-            {children}
-            {iconRight && <span className="shrink-0">{iconRight}</span>}
-          </>
-        )}
+        {loading && <Loader2 className={cn("w-3.5 h-3.5 animate-spin", classNames.spinner)} />}
+        {!loading && iconLeft && <span className={cn("shrink-0", classNames.iconLeft)}>{iconLeft}</span>}
+        <span>{children}</span>
+        {!loading && iconRight && <span className={cn("shrink-0", classNames.iconRight)}>{iconRight}</span>}
       </button>
     );
   }

@@ -16,22 +16,38 @@ export type ToastType = "success" | "error" | "info";
 export interface ToastItem {
   id: string;
   type: ToastType;
-  message: string;
+  message: React.ReactNode;
 }
 
 export interface ConfirmDialogOptions {
-  title?: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
+  title?: React.ReactNode;
+  message: React.ReactNode;
+  confirmText?: React.ReactNode;
+  cancelText?: React.ReactNode;
   danger?: boolean;
 }
 
 export interface ToastContextValue {
   /** Dispatch a floating toast notification */
-  showToast: (message: string, type?: ToastType) => void;
+  showToast: (message: React.ReactNode, type?: ToastType) => void;
   /** Open an asynchronous confirmation modal dialog */
   confirmAction: (options: ConfirmDialogOptions) => Promise<boolean>;
+}
+
+export interface ToastClassNames {
+  viewport?: string;
+  toast?: string;
+  toastSuccess?: string;
+  toastError?: string;
+  toastInfo?: string;
+  closeBtn?: string;
+  dialogOverlay?: string;
+  dialogBox?: string;
+  dialogTitle?: string;
+  dialogMessage?: string;
+  dialogActions?: string;
+  confirmBtn?: string;
+  cancelBtn?: string;
 }
 
 const ToastContext = createContext<ToastContextValue | null>(null);
@@ -40,9 +56,21 @@ export interface ToastProviderProps {
   children: React.ReactNode;
   /** Toast auto-dismiss duration in milliseconds. Default: 4000 */
   autoDismissMs?: number;
+  /** Default label for confirm button in dialogs. Default: 'Confirm' */
+  defaultConfirmText?: React.ReactNode;
+  /** Default label for cancel button in dialogs. Default: 'Cancel' */
+  defaultCancelText?: React.ReactNode;
+  /** Custom class overrides for toast dock and modal elements */
+  classNames?: ToastClassNames;
 }
 
-export function ToastProvider({ children, autoDismissMs = 4000 }: ToastProviderProps) {
+export function ToastProvider({
+  children,
+  autoDismissMs = 4000,
+  defaultConfirmText = "Confirm",
+  defaultCancelText = "Cancel",
+  classNames = {},
+}: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const [confirmState, setConfirmState] = useState<{
     isOpen: boolean;
@@ -57,7 +85,7 @@ export function ToastProvider({ children, autoDismissMs = 4000 }: ToastProviderP
   }, []);
 
   const showToast = useCallback(
-    (message: string, type: ToastType = "info") => {
+    (message: React.ReactNode, type: ToastType = "info") => {
       const id = `toast-${Date.now()}-${idCounter.current++}`;
       setToasts((prev) => [...prev, { id, type, message }]);
 
@@ -119,7 +147,10 @@ export function ToastProvider({ children, autoDismissMs = 4000 }: ToastProviderP
       {/* Floating Notifications Viewport */}
       <div
         aria-live="polite"
-        className="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full"
+        className={cn(
+          "fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full",
+          classNames.viewport
+        )}
       >
         {toasts.map((toast) => {
           let Icon = Info;
@@ -127,15 +158,18 @@ export function ToastProvider({ children, autoDismissMs = 4000 }: ToastProviderP
           const bgClass = "bg-white dark:bg-[#161b22]";
           const textClass = "text-stone-800 dark:text-[#f0f3f6]";
           let iconClass = "text-amber-500";
+          let customTypeClass = classNames.toastInfo;
 
           if (toast.type === "success") {
             Icon = CheckCircle2;
             iconClass = "text-emerald-500";
             borderClass = "border-emerald-500/30 dark:border-emerald-500/40";
+            customTypeClass = classNames.toastSuccess;
           } else if (toast.type === "error") {
             Icon = AlertCircle;
             iconClass = "text-rose-500";
             borderClass = "border-rose-500/30 dark:border-rose-500/40";
+            customTypeClass = classNames.toastError;
           }
 
           return (
@@ -147,18 +181,23 @@ export function ToastProvider({ children, autoDismissMs = 4000 }: ToastProviderP
                 "animate-in slide-in-from-top-2 duration-150",
                 borderClass,
                 bgClass,
-                textClass
+                textClass,
+                classNames.toast,
+                customTypeClass
               )}
             >
               <div className="flex items-center gap-2.5 min-w-0">
                 <Icon size={16} className={cn(iconClass, "shrink-0")} />
-                <p className="text-xs font-medium leading-snug break-words">{toast.message}</p>
+                <div className="text-xs font-medium leading-snug break-words">{toast.message}</div>
               </div>
               <button
                 type="button"
                 onClick={() => removeToast(toast.id)}
-                className="text-stone-400 hover:text-stone-700 dark:text-[#8b949e] dark:hover:text-[#f0f3f6] p-1 rounded-md transition-colors shrink-0 cursor-pointer"
-                aria-label="Close notification"
+                className={cn(
+                  "text-stone-400 hover:text-stone-700 dark:text-[#8b949e] dark:hover:text-[#f0f3f6] p-1 rounded-md transition-colors shrink-0 cursor-pointer",
+                  classNames.closeBtn
+                )}
+                aria-label="Dismiss"
               >
                 <X size={13} />
               </button>
@@ -173,27 +212,46 @@ export function ToastProvider({ children, autoDismissMs = 4000 }: ToastProviderP
           role="dialog"
           aria-modal="true"
           onClick={handleCancel}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
+          className={cn(
+            "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150",
+            classNames.dialogOverlay
+          )}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white dark:bg-[#161b22] border border-stone-200 dark:border-[#30363d] rounded-2xl shadow-2xl p-5 max-w-md w-full space-y-4 animate-in zoom-in-95 duration-150"
+            className={cn(
+              "bg-white dark:bg-[#161b22] border border-stone-200 dark:border-[#30363d] rounded-2xl shadow-2xl p-5 max-w-md w-full space-y-4 animate-in zoom-in-95 duration-150",
+              classNames.dialogBox
+            )}
           >
             {confirmState.options.title && (
-              <h3 className="text-sm font-bold text-stone-900 dark:text-[#f0f3f6]">
+              <h3
+                className={cn(
+                  "text-sm font-bold text-stone-900 dark:text-[#f0f3f6]",
+                  classNames.dialogTitle
+                )}
+              >
                 {confirmState.options.title}
               </h3>
             )}
-            <p className="text-xs text-stone-600 dark:text-[#c9d1d9] leading-relaxed">
+            <div
+              className={cn(
+                "text-xs text-stone-600 dark:text-[#c9d1d9] leading-relaxed",
+                classNames.dialogMessage
+              )}
+            >
               {confirmState.options.message}
-            </p>
-            <div className="flex items-center justify-end gap-2 pt-2">
+            </div>
+            <div className={cn("flex items-center justify-end gap-2 pt-2", classNames.dialogActions)}>
               <button
                 type="button"
                 onClick={handleCancel}
-                className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-stone-700 dark:text-[#c9d1d9] hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer"
+                className={cn(
+                  "px-3.5 py-1.5 rounded-full text-xs font-semibold text-stone-700 dark:text-[#c9d1d9] hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer",
+                  classNames.cancelBtn
+                )}
               >
-                {confirmState.options.cancelText || "Cancelar"}
+                {confirmState.options.cancelText ?? defaultCancelText}
               </button>
               <button
                 type="button"
@@ -202,10 +260,11 @@ export function ToastProvider({ children, autoDismissMs = 4000 }: ToastProviderP
                   "px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-xs transition-colors cursor-pointer",
                   confirmState.options.danger
                     ? "bg-rose-600 hover:bg-rose-700"
-                    : "bg-amber-600 hover:bg-amber-700"
+                    : "bg-amber-600 hover:bg-amber-700",
+                  classNames.confirmBtn
                 )}
               >
-                {confirmState.options.confirmText || "Confirmar"}
+                {confirmState.options.confirmText ?? defaultConfirmText}
               </button>
             </div>
           </div>
@@ -219,9 +278,9 @@ export function useToast(): ToastContextValue {
   const ctx = useContext(ToastContext);
   if (!ctx) {
     return {
-      showToast: (msg: string) => console.log(`[Toast Fallback]: ${msg}`),
+      showToast: (msg: React.ReactNode) => console.log(`[Toast Fallback]:`, msg),
       confirmAction: async (opts: ConfirmDialogOptions) => {
-        if (typeof window !== "undefined") {
+        if (typeof window !== "undefined" && typeof opts.message === "string") {
           return window.confirm(opts.message);
         }
         return true;

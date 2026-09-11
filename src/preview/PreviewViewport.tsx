@@ -2,9 +2,15 @@
 
 import React, { useEffect } from "react";
 import { usePanZoom, UsePanZoomOptions } from "./usePanZoom";
-import { DockableToolbar, DockEdge } from "./DockableToolbar";
+import { DockableToolbar, DockEdge, DockableToolbarLabels } from "./DockableToolbar";
 import { GridOverlay, GridVariant } from "./GridOverlay";
+import { ShortcutItem } from "./ShortcutsLegendModal";
 import { cn } from "../ui/utils";
+
+export interface PreviewViewportClassNames {
+  root?: string;
+  stage?: string;
+}
 
 export interface PreviewViewportProps {
   /** Target document node or rendered pages */
@@ -25,9 +31,14 @@ export interface PreviewViewportProps {
   defaultDockEdge?: DockEdge;
   /** Extra export action buttons rendered in the toolbar */
   toolbarActions?: React.ReactNode;
+  /** Configurable labels for toolbar buttons and tooltips */
+  toolbarLabels?: DockableToolbarLabels;
+  /** Optional keyboard shortcuts list displayed in help modal */
+  shortcuts?: ShortcutItem[];
   /** Ref to forward to the capture container if needed */
   captureRef?: React.RefObject<HTMLDivElement | null>;
   className?: string;
+  classNames?: PreviewViewportClassNames;
 }
 
 export function PreviewViewport({
@@ -40,8 +51,11 @@ export function PreviewViewport({
   onToggleGrid,
   defaultDockEdge = "bottom",
   toolbarActions,
+  toolbarLabels,
+  shortcuts,
   captureRef,
   className = "",
+  classNames = {},
 }: PreviewViewportProps) {
   const {
     zoom,
@@ -90,7 +104,8 @@ export function PreviewViewport({
             ? "cursor-grabbing"
             : "cursor-grab"
           : "cursor-default",
-        className
+        className,
+        classNames.root
       )}
     >
       {/* Background Alignment Grid Overlay */}
@@ -104,7 +119,7 @@ export function PreviewViewport({
           transformOrigin: "center top",
           transition: isPanning ? "none" : "transform 100ms ease-out",
         }}
-        className="w-full flex flex-col items-center pt-8 pb-32 will-change-transform"
+        className={cn("w-full flex flex-col items-center pt-8 pb-32 will-change-transform", classNames.stage)}
       >
         {children}
       </div>
@@ -123,6 +138,8 @@ export function PreviewViewport({
         defaultDockEdge={defaultDockEdge}
         containerRef={viewportRef}
         extraActions={toolbarActions}
+        labels={toolbarLabels}
+        shortcuts={shortcuts}
       />
     </div>
   );

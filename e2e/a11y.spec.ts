@@ -1,0 +1,29 @@
+import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+
+test.describe("Accessibility (a11y) WCAG 2.1 Audits", () => {
+  const storiesToAudit = [
+    { id: "ui-nanobananalogo--all-sizes", name: "NanoBananaLogo" },
+    { id: "ui-button--all-variants", name: "Button" },
+    { id: "ui-segmentedcontrol--editor-tabs", name: "SegmentedControl" },
+    { id: "ui-themeselector--dropdown", name: "ThemeSelector" },
+    { id: "editor-builderheader--papyrus-resume", name: "BuilderHeader" },
+    { id: "editor-sectioncard--default", name: "SectionCard" },
+    { id: "preview-dockabletoolbar--interactive-docking", name: "DockableToolbar" },
+  ];
+
+  for (const story of storiesToAudit) {
+    test(`A11y audit for ${story.name}`, async ({ page }) => {
+      await page.goto(`/iframe.html?id=${story.id}&viewMode=story`);
+      await page.waitForLoadState("networkidle");
+
+      const accessibilityScanResults = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+        // Disable color-contrast checks on simulated storybook iframes where ambient backdrop can vary
+        .disableRules(["color-contrast"])
+        .analyze();
+
+      expect(accessibilityScanResults.violations).toEqual([]);
+    });
+  }
+});

@@ -25,6 +25,7 @@ type Story = StoryObj<typeof SectionCard>;
 
 export const Default: Story = {
   args: {
+    id: "section-personal",
     title: "Informações Pessoais",
     icon: <User size={16} />,
     badge: "Obrigatório",

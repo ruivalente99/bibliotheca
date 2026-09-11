@@ -3,11 +3,18 @@
 import React, { useId } from "react";
 import { cn } from "./utils";
 
+export interface NanoBananaLogoClassNames {
+  root?: string;
+  svg?: string;
+}
+
 export interface NanoBananaLogoProps {
   /** Logo box dimension variant */
   size?: "sm" | "md" | "lg" | "xl";
-  /** Optional custom CSS classes */
+  /** Optional custom CSS classes for the root container */
   className?: string;
+  /** Granular class overrides for internal sub-elements */
+  classNames?: NanoBananaLogoClassNames;
   /** Ambient amber shadow glow effect */
   glow?: boolean;
   /** Accessible label */
@@ -19,8 +26,9 @@ export interface NanoBananaLogoProps {
 export function NanoBananaLogo({
   size = "md",
   className = "",
+  classNames = {},
   glow = false,
-  ariaLabel = "Nano Banana Brand Logo",
+  ariaLabel = "Logo",
   onClick,
 }: NanoBananaLogoProps) {
   const reactId = useId().replace(/:/g, "");
@@ -51,7 +59,8 @@ export function NanoBananaLogo({
         glow
           ? "shadow-sm shadow-amber-500/25 dark:shadow-amber-500/15"
           : "shadow-2xs",
-        className
+        className,
+        classNames.root
       )}
     >
       <svg
@@ -60,7 +69,10 @@ export function NanoBananaLogo({
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="transition-transform duration-300 group-hover:rotate-6 select-none pointer-events-none"
+        className={cn(
+          "transition-transform duration-300 group-hover:rotate-6 select-none pointer-events-none",
+          classNames.svg
+        )}
       >
         <defs>
           {/* Warm Nano Banana Gradient */}
