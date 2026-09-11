@@ -1,0 +1,123 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Bibliotheca/How to Use" />
+
+# 🚀 Quickstart & Integration Guide
+
+### 1. Installation
+
+Install `@valentium/bibliotheca` in your Next.js 15/16 or React 19 application:
+
+```bash
+# Using npm
+npm install @valentium/bibliotheca
+
+# Or link locally during development
+npm install @valentium/bibliotheca@file:../bibliotheca
+```
+
+---
+
+### 2. Tailwind CSS v4 Configuration
+
+Because Bibliotheca is styled with modern Tailwind CSS v4 utility classes, you do **not** need to compile separate vendor CSS in your app. Simply add the `@source` directive to your `globals.css`:
+
+```css
+/* app/globals.css */
+@import "tailwindcss";
+
+/* Point Tailwind to Bibliotheca components */
+@source "../node_modules/@valentium/bibliotheca";
+/* or for local workspace linking: */
+@source "../../bibliotheca/src";
+```
+
+---
+
+### 3. Application Root Providers
+
+Wrap your root layout with `ThemeProvider` and `ToastProvider`:
+
+```tsx
+// app/layout.tsx
+import { ThemeProvider, ToastProvider } from "@valentium/bibliotheca/ui";
+import "./globals.css";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider defaultTheme="system">
+          <ToastProvider autoDismissMs={4000}>
+            {children}
+          </ToastProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+---
+
+### 4. Creating a Full-Featured Editor Page
+
+Using `SplitEditorLayout`, `BuilderHeader`, and `PreviewViewport`:
+
+```tsx
+"use client";
+
+import { useState, useRef } from "react";
+import { SplitEditorLayout, BuilderHeader, SectionCard, useSectionSync } from "@valentium/bibliotheca/editor";
+import { PreviewViewport } from "@valentium/bibliotheca/preview";
+import { Button, useToast } from "@valentium/bibliotheca/ui";
+import { exportElementToPdf } from "@valentium/bibliotheca/export";
+
+export default function MyEditor() {
+  const { showToast, confirmAction } = useToast();
+  const { highlightedSectionId, handleSelectSection } = useSectionSync();
+  const docRef = useRef<HTMLDivElement>(null);
+
+  const handleExport = async () => {
+    if (!docRef.current) return;
+    await exportElementToPdf(docRef.current, { filename: "my-doc.pdf" });
+    showToast("PDF descarregado com sucesso!", "success");
+  };
+
+  const form = (
+    <div className="builder-form-pane p-6 space-y-6">
+      <SectionCard
+        id="section-personal"
+        title="Dados Pessoais"
+        highlighted={highlightedSectionId === "personal"}
+      >
+        <input className="w-full border rounded-lg p-2" placeholder="Nome Completo" />
+      </SectionCard>
+    </div>
+  );
+
+  const preview = (
+    <PreviewViewport
+      docWidth={794}
+      docHeight={1123}
+      toolbarActions={<Button variant="primary" onClick={handleExport}>Descarregar PDF</Button>}
+    >
+      <div
+        ref={docRef}
+        onClick={() => handleSelectSection("personal")}
+        className="w-[794px] h-[1123px] bg-white shadow-2xl p-12 cursor-pointer"
+      >
+        <h1 className="text-2xl font-bold">Document Title</h1>
+      </div>
+    </PreviewViewport>
+  );
+
+  return (
+    <SplitEditorLayout
+      header={<BuilderHeader title="Papyrus Conventus" subtitle="VERBA VOLANT, SCRIPTA MANENT" />}
+      formPane={form}
+      previewPane={preview}
+    />
+  );
+}
+```

@@ -1,0 +1,44 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Bibliotheca/Introduction" />
+
+# 🏛️ Bibliotheca — Architectura Vitae
+
+> *"Omnis ars imitatio naturae est."* — Seneca
+
+Welcome to **Bibliotheca**, the unified, offline-first component library and editor core for **Papyrus** (`cvana`), **Sappientus** (`sappientus`), **Imaguncula** (`Imaguncula`), and future document and canvas applications.
+
+---
+
+## 🧭 The Four Core Pillars
+
+Bibliotheca organizes shared code into four distinct subpath exports:
+
+### 1. `@valentium/bibliotheca/ui`
+Visual design tokens, brand assets, and application-level contexts:
+- **`NanoBananaLogo`**: The signature vector amber banana logo with 3D volume, gloss, and sparkles.
+- **`ThemeProvider` & `ThemeSelector`**: Complete Dark (`#0d1117`), Light (`#f7f7f5`), and System themes with live OS detection.
+- **`ToastProvider` & `ConfirmDialog`**: Notification dock with a built-in promise-based `confirmAction()` modal.
+- **`SegmentedControl`**: Animated pill tab switchers with counter badges.
+- **`Button` & `Tooltip`**: Accessible interactive primitives with keyboard shortcut chips.
+
+### 2. `@valentium/bibliotheca/editor`
+The builder shell and form synchronization engine:
+- **`SplitEditorLayout`**: Resizable two-pane layout with pointer capture, min/max clamping, and responsive mobile tabs.
+- **`useSectionSync`**: Bi-directional smooth scrolling, auto-focusing inputs, and pulse highlighting.
+- **`BuilderHeader`**: Official editor navigation bar with Latin mottoes, status badges, and action slots.
+- **`SectionCard`**: Form section card with collapsing, count badges, and highlight borders.
+
+### 3. `@valentium/bibliotheca/preview`
+High-performance document & canvas viewport:
+- **`PreviewViewport`**: Virtual stage supporting A4, Latin folio, or square canvas dimensions.
+- **`usePanZoom`**: Interactive pan, zoom, spacebar hotkey drag, touch gestures, and responsive auto-fit.
+- **`DockableToolbar`**: Frosted glass floating pill toolbar that snaps and docks to all 4 edges (`bottom`, `right`, `top`, `left`).
+- **`GridOverlay`**: Alignment dots, engineering squares, or transparency checkerboards.
+
+### 4. `@valentium/bibliotheca/export`
+Client-side document and image generation:
+- **`captureElementToCanvas` & `capturePages`**: High-DPI DOM-to-canvas rendering.
+- **`exportElementToPdf`**: Multi-page PDF generation via `jspdf`.
+- **`exportElementToImage`**: PNG, JPEG, or WebP downloads.
+- **`downloadJson` & `promptUploadJson`**: State backups and preset loading.
