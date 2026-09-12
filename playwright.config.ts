@@ -18,7 +18,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npx serve -s storybook-static -l 6006",
+    command: "bun run scripts/serve-storybook.ts",
     url: "http://127.0.0.1:6006",
     reuseExistingServer: !process.env.CI,
     timeout: 30000,

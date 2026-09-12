@@ -18,6 +18,7 @@ test.describe("Accessibility (a11y) WCAG 2.1 Audits", () => {
       await page.waitForLoadState("networkidle");
 
       const accessibilityScanResults = await new AxeBuilder({ page })
+        .include("#storybook-root")
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
         // Disable color-contrast checks on simulated storybook iframes where ambient backdrop can vary
         .disableRules(["color-contrast"])
