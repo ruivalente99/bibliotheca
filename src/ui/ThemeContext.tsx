@@ -1,8 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { type AccentColor, type ThemeMode } from "../tokens";
 
-export type ThemeMode = "light" | "dark" | "system";
+export type { ThemeMode, AccentColor };
 
 export interface ThemeContextType {
   /** The currently configured theme mode */
@@ -13,19 +14,27 @@ export interface ThemeContextType {
   setTheme: (theme: ThemeMode) => void;
   /** Toggle between light and dark modes */
   toggleTheme: () => void;
+  /** The currently active color accent */
+  accent: AccentColor;
+  /** Explicitly set the color accent */
+  setAccent: (accent: AccentColor) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export interface ThemeProviderProps {
   children: React.ReactNode;
-  /** LocalStorage key for persisting theme selection. Default: 'bibliotheca_theme_mode' */
+  /** LocalStorage key for persisting theme mode. Default: 'bibliotheca_theme_mode' */
   storageKey?: string;
   /** Initial fallback theme mode. Default: 'system' */
   defaultTheme?: ThemeMode;
+  /** LocalStorage key for persisting accent color. Default: 'bibliotheca_theme_accent' */
+  storageKeyAccent?: string;
+  /** Initial fallback color accent. Default: 'amber' */
+  defaultAccent?: AccentColor;
 }
 
-function applyThemeToDom(target: "light" | "dark") {
+function applyThemeToDom(target: "light" | "dark", accent: AccentColor) {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
   const body = document.body;
@@ -39,31 +48,57 @@ function applyThemeToDom(target: "light" | "dark") {
     if (body) body.classList.remove("dark");
     root.setAttribute("data-theme", "light");
   }
+
+  root.setAttribute("data-accent", accent);
+  if (body) body.setAttribute("data-accent", accent);
 }
 
 export function ThemeProvider({
   children,
   storageKey = "bibliotheca_theme_mode",
   defaultTheme = "system",
+  storageKeyAccent = "bibliotheca_theme_accent",
+  defaultAccent = "amber",
 }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<ThemeMode>(defaultTheme);
   const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
+  const [accent, setAccentState] = useState<AccentColor>(defaultAccent);
 
-  // Initialize from localStorage or system preference
+  // Initialize theme mode and accent from localStorage
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(storageKey) as ThemeMode | null;
-      if (saved && (saved === "light" || saved === "dark" || saved === "system")) {
-        setThemeState(saved);
+      const savedTheme = localStorage.getItem(storageKey) as ThemeMode | null;
+      if (savedTheme && (savedTheme === "light" || savedTheme === "dark" || savedTheme === "system")) {
+        setThemeState(savedTheme);
       } else {
         setThemeState(defaultTheme);
       }
     } catch {
       setThemeState(defaultTheme);
     }
-  }, [storageKey, defaultTheme]);
 
-  // Synchronize active mode and DOM
+    try {
+      const savedAccent = localStorage.getItem(storageKeyAccent) as AccentColor | null;
+      if (
+        savedAccent &&
+        (savedAccent === "amber" ||
+          savedAccent === "teal" ||
+          savedAccent === "blue" ||
+          savedAccent === "navy" ||
+          savedAccent === "emerald" ||
+          savedAccent === "rose" ||
+          savedAccent === "slate")
+      ) {
+        setAccentState(savedAccent);
+      } else {
+        setAccentState(defaultAccent);
+      }
+    } catch {
+      setAccentState(defaultAccent);
+    }
+  }, [storageKey, defaultTheme, storageKeyAccent, defaultAccent]);
+
+  // Synchronize active mode, accent and DOM
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -75,14 +110,15 @@ export function ThemeProvider({
     }
 
     setResolvedTheme(target);
-    applyThemeToDom(target);
+    applyThemeToDom(target, accent);
 
     try {
       localStorage.setItem(storageKey, theme);
+      localStorage.setItem(storageKeyAccent, accent);
     } catch {
       // Storage unavailable or blocked
     }
-  }, [theme, storageKey]);
+  }, [theme, accent, storageKey, storageKeyAccent]);
 
   // Listen to OS-level system dark/light changes when in system mode
   useEffect(() => {
@@ -92,12 +128,12 @@ export function ThemeProvider({
     const listener = (e: MediaQueryListEvent) => {
       const target = e.matches ? "dark" : "light";
       setResolvedTheme(target);
-      applyThemeToDom(target);
+      applyThemeToDom(target, accent);
     };
 
     media.addEventListener("change", listener);
     return () => media.removeEventListener("change", listener);
-  }, [theme]);
+  }, [theme, accent]);
 
   const setTheme = (newTheme: ThemeMode) => {
     setThemeState(newTheme);
@@ -115,8 +151,21 @@ export function ThemeProvider({
     });
   };
 
+  const setAccent = (newAccent: AccentColor) => {
+    setAccentState(newAccent);
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        resolvedTheme,
+        setTheme,
+        toggleTheme,
+        accent,
+        setAccent,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );

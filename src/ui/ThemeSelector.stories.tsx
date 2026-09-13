@@ -12,6 +12,9 @@ const meta: Meta<typeof ThemeSelector> = {
       control: "radio",
       options: ["dropdown", "toggle"],
     },
+    showAccentPicker: {
+      control: "boolean",
+    },
   },
 };
 
@@ -30,13 +33,22 @@ export const ToggleButton: Story = {
   },
 };
 
+export const WithAccentPicker: Story = {
+  args: {
+    variant: "dropdown",
+    showAccentPicker: true,
+  },
+};
+
 export const CustomLabels: Story = {
   args: {
     variant: "dropdown",
+    showAccentPicker: true,
     labels: {
       light: "Claro",
       dark: "Escuro",
       system: "Sistema",
+      accentSection: "Paleta de Cores",
     },
   },
 };

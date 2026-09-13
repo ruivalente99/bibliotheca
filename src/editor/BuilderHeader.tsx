@@ -67,7 +67,7 @@ export function BuilderHeader({
               {title}
             </h1>
             {statusText && (
-              <span className={cn("hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-300/60 dark:border-amber-500/30", classNames.statusBadge)}>
+              <span className={cn("hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[var(--brand-soft)] text-[var(--brand)] border border-[var(--brand-border)]", classNames.statusBadge)}>
                 {statusText}
               </span>
             )}
@@ -88,7 +88,7 @@ export function BuilderHeader({
           <div className={cn("flex items-center gap-2", classNames.utilitiesContainer)}>
             <div className={cn("w-[1px] h-5 bg-stone-200 dark:bg-[#30363d] hidden sm:block mx-1", classNames.divider)} />
             {extraUtilities}
-            {showThemeSelector && <ThemeSelector variant="dropdown" />}
+            {showThemeSelector && <ThemeSelector variant="dropdown" showAccentPicker />}
           </div>
         )}
       </div>

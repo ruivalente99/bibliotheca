@@ -3,6 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  /* Default Neutral Foundation (Light Mode) */
   --page: #f7f7f5;
   --surface-1: #ffffff;
   --card: #ffffff;
@@ -11,14 +12,20 @@
   --heading: #1c1917;
   --body: #57534e;
   --body-subtle: #78716c;
-  --brand: #d97706;
-  --brand-light: #f59e0b;
-  --brand-soft: rgba(245, 158, 11, 0.12);
   --border: #e7e5e4;
   --border-subtle: #f5f5f4;
+
+  /* Default Brand Accent: Amber */
+  --brand: #d97706;
+  --brand-hover: #b45309;
+  --brand-light: #f59e0b;
+  --brand-soft: rgba(245, 158, 11, 0.12);
+  --brand-border: #fcd34d;
+  --brand-ring: rgba(245, 158, 11, 0.35);
 }
 
 .dark {
+  /* High-Contrast Neutral Foundation (Dark Mode) */
   --page: #0d1117;
   --surface-1: #161b22;
   --card: #21262d;
@@ -27,27 +34,190 @@
   --heading: #f0f3f6;
   --body: #c9d1d9;
   --body-subtle: #8b949e;
-  --brand: #f59e0b;
-  --brand-light: #fbbf24;
-  --brand-soft: rgba(245, 158, 11, 0.18);
   --border: #363d47;
   --border-subtle: #21262d;
+
+  /* Default Brand Accent: Amber (Dark) */
+  --brand: #f59e0b;
+  --brand-hover: #fbbf24;
+  --brand-light: #fde047;
+  --brand-soft: rgba(245, 158, 11, 0.18);
+  --brand-border: rgba(245, 158, 11, 0.4);
+  --brand-ring: rgba(245, 158, 11, 0.45);
 }
 
-/* Base styles for editor components */
+/* -------------------------------------------------------------------------- */
+/* Accent Color Variations (Light Mode)                                       */
+/* -------------------------------------------------------------------------- */
+
+:root[data-accent="amber"],
+body[data-accent="amber"] {
+  --brand: #d97706;
+  --brand-hover: #b45309;
+  --brand-light: #f59e0b;
+  --brand-soft: rgba(245, 158, 11, 0.12);
+  --brand-border: #fcd34d;
+  --brand-ring: rgba(245, 158, 11, 0.35);
+}
+
+:root[data-accent="teal"],
+body[data-accent="teal"] {
+  --brand: #0f766e;
+  --brand-hover: #115e59;
+  --brand-light: #14b8a6;
+  --brand-soft: rgba(20, 184, 166, 0.12);
+  --brand-border: #5eead4;
+  --brand-ring: rgba(20, 184, 166, 0.35);
+}
+
+:root[data-accent="blue"],
+body[data-accent="blue"] {
+  --brand: #0284c7;
+  --brand-hover: #0369a1;
+  --brand-light: #38bdf8;
+  --brand-soft: rgba(56, 189, 248, 0.12);
+  --brand-border: #7dd3fc;
+  --brand-ring: rgba(56, 189, 248, 0.35);
+}
+
+:root[data-accent="navy"],
+body[data-accent="navy"] {
+  --brand: #1e3a8a;
+  --brand-hover: #172554;
+  --brand-light: #3b82f6;
+  --brand-soft: rgba(59, 130, 246, 0.12);
+  --brand-border: #93c5fd;
+  --brand-ring: rgba(59, 130, 246, 0.35);
+}
+
+:root[data-accent="emerald"],
+body[data-accent="emerald"] {
+  --brand: #059669;
+  --brand-hover: #047857;
+  --brand-light: #10b981;
+  --brand-soft: rgba(16, 185, 129, 0.12);
+  --brand-border: #6ee7b7;
+  --brand-ring: rgba(16, 185, 129, 0.35);
+}
+
+:root[data-accent="rose"],
+body[data-accent="rose"] {
+  --brand: #e11d48;
+  --brand-hover: #be123c;
+  --brand-light: #f43f5e;
+  --brand-soft: rgba(244, 63, 94, 0.12);
+  --brand-border: #fda4af;
+  --brand-ring: rgba(244, 63, 94, 0.35);
+}
+
+:root[data-accent="slate"],
+body[data-accent="slate"] {
+  --brand: #475569;
+  --brand-hover: #334155;
+  --brand-light: #64748b;
+  --brand-soft: rgba(100, 116, 139, 0.12);
+  --brand-border: #cbd5e1;
+  --brand-ring: rgba(100, 116, 139, 0.35);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Accent Color Variations (Dark Mode)                                        */
+/* -------------------------------------------------------------------------- */
+
+.dark[data-accent="amber"],
+:root[data-accent="amber"].dark,
+body[data-accent="amber"].dark {
+  --brand: #f59e0b;
+  --brand-hover: #fbbf24;
+  --brand-light: #fde047;
+  --brand-soft: rgba(245, 158, 11, 0.18);
+  --brand-border: rgba(245, 158, 11, 0.4);
+  --brand-ring: rgba(245, 158, 11, 0.45);
+}
+
+.dark[data-accent="teal"],
+:root[data-accent="teal"].dark,
+body[data-accent="teal"].dark {
+  --brand: #14b8a6;
+  --brand-hover: #2dd4bf;
+  --brand-light: #5eead4;
+  --brand-soft: rgba(20, 184, 166, 0.18);
+  --brand-border: rgba(20, 184, 166, 0.4);
+  --brand-ring: rgba(20, 184, 166, 0.45);
+}
+
+.dark[data-accent="blue"],
+:root[data-accent="blue"].dark,
+body[data-accent="blue"].dark {
+  --brand: #38bdf8;
+  --brand-hover: #7dd3fc;
+  --brand-light: #bae6fd;
+  --brand-soft: rgba(56, 189, 248, 0.18);
+  --brand-border: rgba(56, 189, 248, 0.4);
+  --brand-ring: rgba(56, 189, 248, 0.45);
+}
+
+.dark[data-accent="navy"],
+:root[data-accent="navy"].dark,
+body[data-accent="navy"].dark {
+  --brand: #60a5fa;
+  --brand-hover: #93c5fd;
+  --brand-light: #bfdbfe;
+  --brand-soft: rgba(96, 165, 250, 0.18);
+  --brand-border: rgba(96, 165, 250, 0.4);
+  --brand-ring: rgba(96, 165, 250, 0.45);
+}
+
+.dark[data-accent="emerald"],
+:root[data-accent="emerald"].dark,
+body[data-accent="emerald"].dark {
+  --brand: #10b981;
+  --brand-hover: #34d399;
+  --brand-light: #6ee7b7;
+  --brand-soft: rgba(16, 185, 129, 0.18);
+  --brand-border: rgba(16, 185, 129, 0.4);
+  --brand-ring: rgba(16, 185, 129, 0.45);
+}
+
+.dark[data-accent="rose"],
+:root[data-accent="rose"].dark,
+body[data-accent="rose"].dark {
+  --brand: #fb7185;
+  --brand-hover: #fda4af;
+  --brand-light: #fecdd3;
+  --brand-soft: rgba(251, 113, 133, 0.18);
+  --brand-border: rgba(251, 113, 133, 0.4);
+  --brand-ring: rgba(251, 113, 133, 0.45);
+}
+
+.dark[data-accent="slate"],
+:root[data-accent="slate"].dark,
+body[data-accent="slate"].dark {
+  --brand: #94a3b8;
+  --brand-hover: #cbd5e1;
+  --brand-light: #e2e8f0;
+  --brand-soft: rgba(148, 163, 184, 0.18);
+  --brand-border: rgba(148, 163, 184, 0.4);
+  --brand-ring: rgba(148, 163, 184, 0.45);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Base styles and dynamic animations                                         */
+/* -------------------------------------------------------------------------- */
+
 .builder-form-pane {
   scroll-behavior: smooth;
 }
 
-@keyframes pulse-amber {
+@keyframes pulse-accent {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+    box-shadow: 0 0 0 0 transparent;
   }
   50% {
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.4);
+    box-shadow: 0 0 0 4px var(--brand-ring);
   }
 }
 
 .highlight-pulse {
-  animation: pulse-amber 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse-accent 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

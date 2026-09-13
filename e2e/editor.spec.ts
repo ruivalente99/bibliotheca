@@ -40,6 +40,6 @@ test.describe("Editor Components E2E", () => {
 
     // Corresponding form section should receive the highlight ring
     const formExpCard = page.locator("#section-experience");
-    await expect(formExpCard).toHaveClass(/ring-2 ring-amber-500/);
+    await expect(formExpCard).toHaveClass(/ring-2 (ring-\[var\(--brand\)\]|ring-amber-500)/);
   });
 });

@@ -157,7 +157,7 @@ export function ToastProvider({
           let borderClass = "border-stone-200 dark:border-[#363d47]";
           const bgClass = "bg-white dark:bg-[#161b22]";
           const textClass = "text-stone-800 dark:text-[#f0f3f6]";
-          let iconClass = "text-amber-500";
+          let iconClass = "text-[var(--brand)]";
           let customTypeClass = classNames.toastInfo;
 
           if (toast.type === "success") {
@@ -260,7 +260,7 @@ export function ToastProvider({
                   "px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-xs transition-colors cursor-pointer",
                   confirmState.options.danger
                     ? "bg-rose-600 hover:bg-rose-700"
-                    : "bg-amber-600 hover:bg-amber-700",
+                    : "bg-[var(--brand)] hover:bg-[var(--brand-hover)]",
                   classNames.confirmBtn
                 )}
               >

@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { useTheme, ThemeMode } from "./ThemeContext";
-import { Sun, Moon, Laptop, ChevronDown } from "lucide-react";
+import { useTheme, type ThemeMode, type AccentColor } from "./ThemeContext";
+import { ACCENT_LIST } from "../tokens";
+import { Sun, Moon, Laptop, ChevronDown, Check } from "lucide-react";
 import { cn } from "./utils";
 
 export interface ThemeSelectorLabels {
   light?: React.ReactNode;
   dark?: React.ReactNode;
   system?: React.ReactNode;
+  accentSection?: React.ReactNode;
   toggleTitle?: string;
   ariaLabel?: string;
 }
@@ -23,11 +25,14 @@ export interface ThemeSelectorClassNames {
   item?: string;
   itemActive?: string;
   itemInactive?: string;
+  accentContainer?: string;
 }
 
 export interface ThemeSelectorProps {
   /** Display variant: 'dropdown' with label or compact 'toggle' button */
   variant?: "dropdown" | "toggle";
+  /** Whether to display the accent color swatch selector inside the dropdown. Default: false */
+  showAccentPicker?: boolean;
   /** Labels for i18n support */
   labels?: ThemeSelectorLabels;
   /** Root class name */
@@ -44,12 +49,13 @@ export interface ThemeSelectorProps {
 
 export function ThemeSelector({
   variant = "dropdown",
+  showAccentPicker = false,
   labels = {},
   className = "",
   classNames = {},
   icons = {},
 }: ThemeSelectorProps) {
-  const { theme, setTheme, resolvedTheme, toggleTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme, toggleTheme, accent, setAccent } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -61,6 +67,7 @@ export function ThemeSelector({
     light: labels.light ?? "Light",
     dark: labels.dark ?? "Dark",
     system: labels.system ?? "System",
+    accentSection: labels.accentSection ?? "Accent Palette",
     toggleTitle: labels.toggleTitle ?? "",
     ariaLabel: labels.ariaLabel,
   };
@@ -90,7 +97,7 @@ export function ThemeSelector({
           "border border-stone-200/80 dark:border-[#363d47]",
           "bg-stone-100/70 dark:bg-[#1c2128]",
           "text-stone-600 dark:text-stone-300",
-          "hover:text-amber-600 dark:hover:text-amber-400 hover:border-amber-300 dark:hover:border-amber-500/50",
+          "hover:text-[var(--brand)] hover:border-[var(--brand-border)]",
           "transition-all duration-200 active:scale-95 cursor-pointer",
           className,
           classNames.root,
@@ -100,7 +107,7 @@ export function ThemeSelector({
         title={t.toggleTitle || undefined}
       >
         {resolvedTheme === "dark" ? (
-          <LightIcon size={16} className={cn("text-amber-400 animate-in spin-in-180 duration-300", classNames.icon)} />
+          <LightIcon size={16} className={cn("text-[var(--brand)] animate-in spin-in-180 duration-300", classNames.icon)} />
         ) : (
           <DarkIcon size={16} className={cn("text-stone-600 animate-in spin-in-180 duration-300", classNames.icon)} />
         )}
@@ -138,7 +145,7 @@ export function ThemeSelector({
           classNames.trigger
         )}
       >
-        <CurrentIcon size={13} className={cn("text-amber-600 dark:text-amber-400 shrink-0", classNames.icon)} />
+        <CurrentIcon size={13} className={cn("text-[var(--brand)] shrink-0", classNames.icon)} />
         <span className={cn("capitalize font-mono text-[11.5px]", classNames.label)}>{currentLabel}</span>
         <ChevronDown
           size={11}
@@ -153,7 +160,7 @@ export function ThemeSelector({
       {isOpen && (
         <div
           className={cn(
-            "absolute right-0 mt-1.5 w-40 bg-white dark:bg-[#161b22] rounded-2xl shadow-xl border border-stone-200 dark:border-[#30363d] p-1.5 z-50 animate-in fade-in duration-100",
+            "absolute right-0 mt-1.5 w-44 bg-white dark:bg-[#161b22] rounded-2xl shadow-xl border border-stone-200 dark:border-[#30363d] p-1.5 z-50 animate-in fade-in duration-100",
             classNames.dropdown
           )}
         >
@@ -166,12 +173,12 @@ export function ThemeSelector({
                 type="button"
                 onClick={() => {
                   setTheme(opt.id);
-                  setIsOpen(false);
+                  if (!showAccentPicker) setIsOpen(false);
                 }}
                 className={cn(
                   "w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-left transition-colors cursor-pointer",
                   isSelected
-                    ? cn("bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300", classNames.itemActive)
+                    ? cn("bg-[var(--brand-soft)] text-[var(--brand)]", classNames.itemActive)
                     : cn("text-stone-700 dark:text-[#c9d1d9] hover:bg-stone-100 dark:hover:bg-[#21262d]", classNames.itemInactive),
                   classNames.item
                 )}
@@ -180,7 +187,7 @@ export function ThemeSelector({
                   size={14}
                   className={
                     isSelected
-                      ? "text-amber-700 dark:text-amber-400"
+                      ? "text-[var(--brand)]"
                       : "text-stone-500 dark:text-[#8b949e]"
                   }
                 />
@@ -188,6 +195,43 @@ export function ThemeSelector({
               </button>
             );
           })}
+
+          {showAccentPicker && (
+            <div className={cn("mt-2 pt-2 border-t border-stone-100 dark:border-[#21262d] px-1", classNames.accentContainer)}>
+              <div className="text-[10px] font-mono uppercase tracking-wider text-stone-400 dark:text-[#8b949e] mb-1.5 px-1">
+                {t.accentSection}
+              </div>
+              <div className="grid grid-cols-4 gap-1.5 p-1 bg-stone-50 dark:bg-[#0d1117] rounded-xl border border-stone-200/60 dark:border-[#30363d]">
+                {ACCENT_LIST.map((themeDef) => {
+                  const isAccentSelected = accent === themeDef.id;
+                  const swatch = resolvedTheme === "dark" ? themeDef.dark.brand : themeDef.light.brand;
+
+                  return (
+                    <button
+                      key={themeDef.id}
+                      type="button"
+                      title={themeDef.label}
+                      onClick={() => {
+                        setAccent(themeDef.id);
+                      }}
+                      style={{ backgroundColor: swatch }}
+                      className={cn(
+                        "w-7 h-7 rounded-full flex items-center justify-center transition-all cursor-pointer",
+                        "hover:scale-105 active:scale-90",
+                        isAccentSelected
+                          ? "ring-2 ring-stone-900 dark:ring-white scale-110 shadow-xs"
+                          : "opacity-80 hover:opacity-100"
+                      )}
+                    >
+                      {isAccentSelected && (
+                        <Check size={12} className="text-white drop-shadow-sm pointer-events-none" strokeWidth={3} />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

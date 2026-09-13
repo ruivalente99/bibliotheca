@@ -9,11 +9,12 @@ export interface ButtonClassNames {
   spinner?: string;
   iconLeft?: string;
   iconRight?: string;
+  label?: string;
 }
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual style variant */
-  variant?: "primary" | "secondary" | "ghost" | "danger" | "pill";
+  variant?: "primary" | "secondary" | "ghost" | "danger" | "pill" | "outline";
   /** Size variant */
   size?: "sm" | "md" | "lg" | "icon";
   /** Shows an integrated spinning loader */
@@ -43,19 +44,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseClasses =
-      "inline-flex items-center justify-center font-semibold transition-all duration-150 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:active:scale-100";
+      "inline-flex items-center justify-center font-semibold transition-all duration-150 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)]";
 
     const variantClasses = {
       primary:
-        "bg-amber-600 hover:bg-amber-700 text-white shadow-xs dark:bg-amber-600 dark:hover:bg-amber-500",
+        "bg-[var(--brand)] hover:bg-[var(--brand-hover)] text-white shadow-xs",
       secondary:
         "bg-stone-100 hover:bg-stone-200 dark:bg-[#21262d] dark:hover:bg-[#30363d] text-stone-700 dark:text-[#c9d1d9] border border-stone-200/80 dark:border-[#363d47]",
+      outline:
+        "bg-transparent hover:bg-stone-100 dark:hover:bg-[#21262d] text-stone-700 dark:text-[#c9d1d9] border border-stone-300 dark:border-[#363d47]",
       ghost:
         "text-stone-600 dark:text-[#8b949e] hover:text-stone-900 dark:hover:text-[#f0f3f6] hover:bg-stone-100 dark:hover:bg-[#21262d]",
       danger:
         "bg-rose-600 hover:bg-rose-700 text-white shadow-xs dark:bg-rose-700 dark:hover:bg-rose-600",
       pill:
-        "bg-white dark:bg-[#21262d] text-stone-700 dark:text-[#c9d1d9] border border-stone-200 dark:border-[#30363d] shadow-2xs hover:border-amber-400 dark:hover:border-amber-500 rounded-full",
+        "bg-white dark:bg-[#21262d] text-stone-700 dark:text-[#c9d1d9] border border-stone-200 dark:border-[#30363d] shadow-2xs hover:border-[var(--brand-light)] rounded-full",
     };
 
     const sizeClasses = {
@@ -81,7 +84,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {loading && <Loader2 className={cn("w-3.5 h-3.5 animate-spin", classNames.spinner)} />}
         {!loading && iconLeft && <span className={cn("shrink-0", classNames.iconLeft)}>{iconLeft}</span>}
-        <span>{children}</span>
+        {children !== undefined && children !== null && (
+          <span className={cn("truncate", classNames.label)}>{children}</span>
+        )}
         {!loading && iconRight && <span className={cn("shrink-0", classNames.iconRight)}>{iconRight}</span>}
       </button>
     );

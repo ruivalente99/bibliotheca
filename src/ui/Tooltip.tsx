@@ -36,19 +36,20 @@ export function Tooltip({
       const rect = triggerRef.current.getBoundingClientRect();
       let top = 0;
       let left = 0;
+      const offset = 8;
 
       if (side === "top") {
-        top = rect.top - 8;
+        top = rect.top - offset;
         left = rect.left + rect.width / 2;
       } else if (side === "bottom") {
-        top = rect.bottom + 8;
+        top = rect.bottom + offset;
         left = rect.left + rect.width / 2;
       } else if (side === "left") {
         top = rect.top + rect.height / 2;
-        left = rect.left - 8;
+        left = rect.left - offset;
       } else if (side === "right") {
         top = rect.top + rect.height / 2;
-        left = rect.right + 8;
+        left = rect.right + offset;
       }
 
       setCoords({ top, left });
@@ -96,7 +97,7 @@ export function Tooltip({
             {shortcut && (
               <kbd
                 className={cn(
-                  "px-1 py-0.2 rounded text-[9px] font-mono bg-stone-800 dark:bg-[#21262d] text-amber-400 border border-stone-600",
+                  "px-1 py-0.2 rounded text-[9px] font-mono bg-stone-800 dark:bg-[#21262d] text-[var(--brand)] border border-stone-600",
                   classNames.shortcut
                 )}
               >

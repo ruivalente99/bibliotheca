@@ -79,7 +79,7 @@ export function ShortcutsLegendModal({
       >
         <div className={cn("flex items-center justify-between pb-3 border-b border-stone-100 dark:border-[#21262d]", classNames.header)}>
           <div className="flex items-center gap-2">
-            <Keyboard size={16} className="text-amber-600 dark:text-amber-400" />
+            <Keyboard size={16} className="text-[var(--brand)]" />
             <div className={cn("text-sm font-bold text-stone-900 dark:text-[#f0f3f6]", classNames.title)}>{title}</div>
           </div>
           <button
@@ -99,7 +99,7 @@ export function ShortcutsLegendModal({
           {shortcuts.map((item, i) => (
             <div key={i} className={cn("flex items-center justify-between text-xs gap-3", classNames.item)}>
               <div className={cn("text-stone-600 dark:text-[#c9d1d9]", classNames.description)}>{item.description}</div>
-              <kbd className={cn("px-2 py-0.5 rounded-md font-mono text-[10.5px] font-bold bg-stone-100 dark:bg-[#21262d] text-amber-700 dark:text-amber-400 border border-stone-200 dark:border-[#363d47] shrink-0", classNames.kbd)}>
+              <kbd className={cn("px-2 py-0.5 rounded-md font-mono text-[10.5px] font-bold bg-stone-100 dark:bg-[#21262d] text-[var(--brand)] border border-stone-200 dark:border-[#363d47] shrink-0", classNames.kbd)}>
                 {item.key}
               </kbd>
             </div>

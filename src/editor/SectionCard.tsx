@@ -66,7 +66,7 @@ export function SectionCard({
         "rounded-2xl border transition-all duration-300 outline-none",
         "bg-white dark:bg-[#161b22] border-stone-200/80 dark:border-[#30363d] shadow-2xs",
         highlighted
-          ? "ring-2 ring-amber-500 border-amber-500/80 bg-amber-500/[0.03] shadow-md shadow-amber-500/10"
+          ? "ring-2 ring-[var(--brand)] border-[var(--brand)] bg-[var(--brand-soft)] shadow-md shadow-[var(--brand-ring)]"
           : "hover:border-stone-300 dark:hover:border-[#363d47]",
         className,
         classNames.root
@@ -75,7 +75,7 @@ export function SectionCard({
       {/* Card Header */}
       <div className={cn("flex items-center justify-between p-4 border-b border-stone-100 dark:border-[#21262d]", classNames.header)}>
         <div className="flex items-center gap-2.5 min-w-0">
-          {icon && <span className={cn("text-amber-600 dark:text-amber-400 shrink-0", classNames.icon)}>{icon}</span>}
+          {icon && <span className={cn("text-[var(--brand)] shrink-0", classNames.icon)}>{icon}</span>}
           <div className={cn("text-xs sm:text-sm font-bold tracking-wider uppercase text-stone-800 dark:text-[#f0f3f6] truncate", classNames.title)}>
             {title}
           </div>

@@ -105,7 +105,7 @@ export function SplitEditorLayout({
             className={cn(
               "flex-1 py-1.5 text-xs font-bold rounded-full flex items-center justify-center gap-1.5 transition-all cursor-pointer",
               activeMobileTab === "edit"
-                ? "bg-white dark:bg-[#21262d] text-amber-800 dark:text-amber-400 shadow-xs"
+                ? "bg-white dark:bg-[#21262d] text-[var(--brand)] shadow-xs"
                 : "text-stone-500 dark:text-[#8b949e]",
               classNames.mobileBtnEdit
             )}
@@ -119,7 +119,7 @@ export function SplitEditorLayout({
             className={cn(
               "flex-1 py-1.5 text-xs font-bold rounded-full flex items-center justify-center gap-1.5 transition-all cursor-pointer",
               activeMobileTab === "preview"
-                ? "bg-white dark:bg-[#21262d] text-amber-800 dark:text-amber-400 shadow-xs"
+                ? "bg-white dark:bg-[#21262d] text-[var(--brand)] shadow-xs"
                 : "text-stone-500 dark:text-[#8b949e]",
               classNames.mobileBtnPreview
             )}
@@ -173,7 +173,7 @@ export function SplitEditorLayout({
           className={cn(
             "hidden md:flex items-center justify-center relative z-20 shrink-0",
             "w-3 -mx-1.5 cursor-col-resize select-none group",
-            isDraggingSplit && "bg-amber-500/20",
+            isDraggingSplit && "bg-[var(--brand-soft)]",
             classNames.handle
           )}
         >
@@ -181,8 +181,8 @@ export function SplitEditorLayout({
             className={cn(
               "w-1 h-full rounded-full transition-colors",
               isDraggingSplit
-                ? "bg-amber-500"
-                : "bg-stone-200/80 dark:bg-[#30363d] group-hover:bg-amber-400 dark:group-hover:bg-amber-500",
+                ? "bg-[var(--brand)]"
+                : "bg-stone-200/80 dark:bg-[#30363d] group-hover:bg-[var(--brand-light)]",
               classNames.handleBar
             )}
           />
@@ -190,8 +190,8 @@ export function SplitEditorLayout({
             className={cn(
               "absolute flex items-center justify-center w-5 h-8 rounded-md shadow-sm border",
               "bg-white dark:bg-[#21262d] border-stone-300 dark:border-[#363d47]",
-              "text-stone-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors",
-              isDraggingSplit && "ring-2 ring-amber-500",
+              "text-stone-400 group-hover:text-[var(--brand)] transition-colors",
+              isDraggingSplit && "ring-2 ring-[var(--brand)]",
               classNames.grip
             )}
           >

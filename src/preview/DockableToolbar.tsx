@@ -213,7 +213,7 @@ export function DockableToolbar({
                 className={cn(
                   "p-1.5 rounded-full transition-all cursor-pointer",
                   toolMode === "pointer"
-                    ? cn("bg-white dark:bg-[#30363d] text-amber-600 dark:text-amber-400 shadow-xs", classNames.buttonActive)
+                    ? cn("bg-white dark:bg-[#30363d] text-[var(--brand)] shadow-xs", classNames.buttonActive)
                     : "text-stone-400 hover:text-stone-700 dark:hover:text-[#f0f3f6]",
                   classNames.button
                 )}
@@ -230,7 +230,7 @@ export function DockableToolbar({
                 className={cn(
                   "p-1.5 rounded-full transition-all cursor-pointer",
                   toolMode === "hand"
-                    ? cn("bg-white dark:bg-[#30363d] text-amber-600 dark:text-amber-400 shadow-xs", classNames.buttonActive)
+                    ? cn("bg-white dark:bg-[#30363d] text-[var(--brand)] shadow-xs", classNames.buttonActive)
                     : "text-stone-400 hover:text-stone-700 dark:hover:text-[#f0f3f6]",
                   classNames.button
                 )}
@@ -308,7 +308,7 @@ export function DockableToolbar({
                 className={cn(
                   "p-1.5 rounded-full transition-all cursor-pointer",
                   showGrid
-                    ? cn("bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 font-bold", classNames.buttonActive)
+                    ? cn("bg-[var(--brand-soft)] text-[var(--brand)] font-bold", classNames.buttonActive)
                     : "hover:bg-stone-100 dark:hover:bg-[#21262d]",
                   classNames.button
                 )}
@@ -337,7 +337,7 @@ export function DockableToolbar({
             type="button"
             onClick={() => setIsHelpOpen(true)}
             className={cn(
-              "p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer",
+              "p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] text-stone-400 hover:text-[var(--brand)] transition-colors cursor-pointer",
               classNames.button
             )}
             aria-label="Shortcuts"

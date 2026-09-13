@@ -1,6 +1,6 @@
 {
   "name": "@valentium/bibliotheca",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Unified React 19 & Tailwind CSS v4 component library and editor core for document builders",
   "type": "module",
   "main": "./dist/index.js",
@@ -11,6 +11,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.js",
+      "require": "./dist/tokens.cjs"
     },
     "./ui": {
       "types": "./dist/ui/index.d.ts",
