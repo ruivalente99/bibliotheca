@@ -122,6 +122,9 @@ bun run typecheck
 
 # Build ESM & CJS distribution bundles with .d.ts
 bun run build
+
+# Package distribution tarball for release (.tgz)
+bun run pack
 ```
 
 ---

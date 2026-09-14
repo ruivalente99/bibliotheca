@@ -125,6 +125,9 @@ bun run build-storybook
 # Compile production package bundles (ESM, CJS, DTS)
 bun run build
 
+# Package distribution tarball (.tgz) for releases
+bun run pack
+
 # Start local Storybook development server
 bun run storybook
 ```
