@@ -1,6 +1,6 @@
 # BIBLIOTHECA — Agent Reference & Developer Manual
 
-This document serves as the technical guide for AI Agents, LLMs, and engineers operating on or extending the **@valentium/bibliotheca** component system and document editor core.
+This document serves as the technical guide for AI Agents, LLMs, and engineers operating on or extending the **@ruivalente99/bibliotheca** component system and document editor core.
 
 ---
 
@@ -22,7 +22,7 @@ All components, hooks, and utilities must follow these immutable principles:
 Bibliotheca exports six dedicated subpaths declared in `package.json` and bundled by `tsup`:
 
 ```
-@valentium/bibliotheca
+@ruivalente99/bibliotheca
 ├── /tokens      -> Formal token maps (spacing, radii, typography, shadows, 7 accent definitions)
 ├── /ui          -> Dumb interface primitives (Button, Badge, Card, Input, Textarea, Switch, Modal, Drawer, Tabs, etc.)
 ├── /editor      -> Editor workbench layout, header, section cards, split ratio, section sync
@@ -34,13 +34,13 @@ Bibliotheca exports six dedicated subpaths declared in `package.json` and bundle
 ### Import Examples:
 ```typescript
 // Subpath import (recommended for bundle efficiency)
-import { Button, Badge, Modal } from "@valentium/bibliotheca/ui";
-import { SplitEditorLayout, SectionCard } from "@valentium/bibliotheca/editor";
-import { PreviewViewport, DockableToolbar } from "@valentium/bibliotheca/preview";
-import { ACCENT_THEMES, type AccentColor } from "@valentium/bibliotheca/tokens";
+import { Button, Badge, Modal } from "@ruivalente99/bibliotheca/ui";
+import { SplitEditorLayout, SectionCard } from "@ruivalente99/bibliotheca/editor";
+import { PreviewViewport, DockableToolbar } from "@ruivalente99/bibliotheca/preview";
+import { ACCENT_THEMES, type AccentColor } from "@ruivalente99/bibliotheca/tokens";
 
 // Root barrel import (convenience)
-import { Button, SplitEditorLayout, PreviewViewport } from "@valentium/bibliotheca";
+import { Button, SplitEditorLayout, PreviewViewport } from "@ruivalente99/bibliotheca";
 ```
 
 ---

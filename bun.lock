@@ -3,7 +3,7 @@
   "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "@valentium/bibliotheca",
+      "name": "@ruivalente99/bibliotheca",
       "dependencies": {
         "clsx": "^2.1.1",
         "jspdf": "^2.5.2",

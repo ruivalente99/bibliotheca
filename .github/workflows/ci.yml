@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 jobs:
   verify:
@@ -47,5 +47,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bibliotheca-package
-          path: valentium-bibliotheca-*.tgz
+          path: "*.tgz"
           if-no-files-found: error

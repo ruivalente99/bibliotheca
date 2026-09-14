@@ -6,14 +6,14 @@ import { Meta } from "@storybook/blocks";
 
 ### 1. Installation
 
-Install `@valentium/bibliotheca` in your Next.js or React 19 application using Bun:
+Install `@ruivalente99/bibliotheca` in your Next.js or React 19 application using Bun:
 
 ```bash
 # Using Bun (recommended)
-bun add @valentium/bibliotheca
+bun add @ruivalente99/bibliotheca
 
 # Or link locally during development
-bun add @valentium/bibliotheca@file:../bibliotheca
+bun add @ruivalente99/bibliotheca@file:../bibliotheca
 ```
 
 ---
@@ -25,10 +25,10 @@ Bibliotheca is styled with modern Tailwind CSS v4 utility classes and CSS variab
 ```css
 /* app/globals.css */
 @import "tailwindcss";
-@import "@valentium/bibliotheca/styles.css";
+@import "@ruivalente99/bibliotheca/styles.css";
 
 /* Point Tailwind to Bibliotheca source files */
-@source "../node_modules/@valentium/bibliotheca";
+@source "../node_modules/@ruivalente99/bibliotheca";
 ```
 
 ---
@@ -39,7 +39,7 @@ Wrap your root layout with `ThemeProvider` and `ToastProvider`:
 
 ```tsx
 // app/layout.tsx
-import { ThemeProvider, ToastProvider } from "@valentium/bibliotheca/ui";
+import { ThemeProvider, ToastProvider } from "@ruivalente99/bibliotheca/ui";
 import "./globals.css";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -59,9 +59,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ---
 
-### 4. Creating a Full-Featured Document Editor Page
+### 4. Assembling a Full Studio Experience
 
-Using `SplitEditorLayout`, `BuilderHeader`, and `PreviewViewport`:
+Here is a full minimal example combining the header, editor panes, canvas viewport, and PDF export:
 
 ```tsx
 "use client";
@@ -72,10 +72,10 @@ import {
   BuilderHeader,
   SectionCard,
   useSectionSync,
-} from "@valentium/bibliotheca/editor";
-import { PreviewViewport } from "@valentium/bibliotheca/preview";
-import { Button, Input, useToast } from "@valentium/bibliotheca/ui";
-import { exportNodeToPdf } from "@valentium/bibliotheca/export";
+} from "@ruivalente99/bibliotheca/editor";
+import { PreviewViewport } from "@ruivalente99/bibliotheca/preview";
+import { Button, Input, useToast } from "@ruivalente99/bibliotheca/ui";
+import { exportNodeToPdf } from "@ruivalente99/bibliotheca/export";
 
 export default function DocumentStudio() {
   const { showToast } = useToast();

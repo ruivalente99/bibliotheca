@@ -12,12 +12,12 @@ Bibliotheca provides 6 modular subpath exports:
 
 | Module | Purpose | Key Exports |
 | :--- | :--- | :--- |
-| **`@valentium/bibliotheca/tokens`** | Formal design tokens & theme palettes | `ACCENT_THEMES`, `ACCENT_LIST`, `SPACING_TOKENS`, `RADIUS_TOKENS`, `SHADOW_TOKENS` |
-| **`@valentium/bibliotheca/ui`** | Design primitives & UI contexts | `Button`, `Badge`, `Card`, `Input`, `Textarea`, `Switch`, `Modal`, `Drawer`, `Tabs`, `DropdownMenu`, `AccentSelector`, `ThemeSelector`, `ThemeProvider`, `ToastProvider`, `EmptyState`, `Tooltip`, `NanoBananaLogo`, `cn` |
-| **`@valentium/bibliotheca/editor`** | Builder layout & sync | `SplitEditorLayout`, `useSplitRatio`, `useSectionSync`, `BuilderHeader`, `SectionCard` |
-| **`@valentium/bibliotheca/preview`** | Canvas & viewport engine | `PreviewViewport`, `usePanZoom`, `DockableToolbar`, `GridOverlay`, `CanvasTooltip`, `ShortcutsLegendModal` |
-| **`@valentium/bibliotheca/export`** | Export & I/O helpers | `captureNodeToCanvas`, `capturePages`, `exportNodeToPdf`, `exportNodeToImage`, `exportToJson`, `importFromJson` |
-| **`@valentium/bibliotheca/styles.css`** | Tailwind CSS v4 variables & themes | Core design token variables, dark mode rules, and 7 accent palette classes |
+| **`@ruivalente99/bibliotheca/tokens`** | Formal design tokens & theme palettes | `ACCENT_THEMES`, `ACCENT_LIST`, `SPACING_TOKENS`, `RADIUS_TOKENS`, `SHADOW_TOKENS` |
+| **`@ruivalente99/bibliotheca/ui`** | Design primitives & UI contexts | `Button`, `Badge`, `Card`, `Input`, `Textarea`, `Switch`, `Modal`, `Drawer`, `Tabs`, `DropdownMenu`, `AccentSelector`, `ThemeSelector`, `ThemeProvider`, `ToastProvider`, `EmptyState`, `Tooltip`, `NanoBananaLogo`, `cn` |
+| **`@ruivalente99/bibliotheca/editor`** | Builder layout & sync | `SplitEditorLayout`, `useSplitRatio`, `useSectionSync`, `BuilderHeader`, `SectionCard` |
+| **`@ruivalente99/bibliotheca/preview`** | Canvas & viewport engine | `PreviewViewport`, `usePanZoom`, `DockableToolbar`, `GridOverlay`, `CanvasTooltip`, `ShortcutsLegendModal` |
+| **`@ruivalente99/bibliotheca/export`** | Export & I/O helpers | `captureNodeToCanvas`, `capturePages`, `exportNodeToPdf`, `exportNodeToImage`, `exportToJson`, `importFromJson` |
+| **`@ruivalente99/bibliotheca/styles.css`** | Tailwind CSS v4 variables & themes | Core design token variables, dark mode rules, and 7 accent palette classes |
 
 ---
 
@@ -25,10 +25,14 @@ Bibliotheca provides 6 modular subpath exports:
 
 ### 1. Installation
 
+From GitHub Packages (`.npmrc`: `@ruivalente99:registry=https://npm.pkg.github.com`):
+
 ```bash
-bun add @valentium/bibliotheca
+bun add @ruivalente99/bibliotheca
+# or install directly from release tarball:
+bun add https://github.com/ruivalente99/bibliotheca/releases/download/v0.3.1/ruivalente99-bibliotheca-0.3.1.tgz
 # or link locally:
-bun add @valentium/bibliotheca@file:../bibliotheca
+bun add @ruivalente99/bibliotheca@file:../bibliotheca
 ```
 
 ### 2. Configure Tailwind CSS v4
@@ -37,17 +41,17 @@ Add the stylesheet import and `@source` directive in your application's `globals
 
 ```css
 @import "tailwindcss";
-@import "@valentium/bibliotheca/styles.css";
+@import "@ruivalente99/bibliotheca/styles.css";
 
 /* Scan Bibliotheca components for utility classes */
-@source "../node_modules/@valentium/bibliotheca";
+@source "../node_modules/@ruivalente99/bibliotheca";
 ```
 
 ### 3. Wrap Root Layout with Providers
 
 ```tsx
 // app/layout.tsx
-import { ThemeProvider, ToastProvider } from "@valentium/bibliotheca/ui";
+import { ThemeProvider, ToastProvider } from "@ruivalente99/bibliotheca/ui";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -17,7 +17,7 @@ The architecture is governed by four structural rules:
 The library is organized into six isolated subpath entrypoints defined in `package.json` and `tsup.config.ts`:
 
 ```
-@valentium/bibliotheca
+@ruivalente99/bibliotheca
 ├── /tokens      -> Formal token maps (spacing, radii, typography, shadows, 7 accent definitions)
 ├── /ui          -> Dumb primitives (Button, Badge, Card, Input, Textarea, Switch, Modal, Drawer, etc.)
 ├── /editor      -> Editor workbench layouts, section cards, split panels, sync hooks

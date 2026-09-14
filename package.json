@@ -1,7 +1,14 @@
 {
-  "name": "@valentium/bibliotheca",
-  "version": "0.3.0",
+  "name": "@ruivalente99/bibliotheca",
+  "version": "0.3.1",
   "description": "Unified React 19 & Tailwind CSS v4 component library and editor core for document builders",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruivalente99/bibliotheca.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
