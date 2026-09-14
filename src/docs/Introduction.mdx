@@ -2,43 +2,64 @@ import { Meta } from "@storybook/blocks";
 
 <Meta title="Bibliotheca/Introduction" />
 
-# 🏛️ Bibliotheca — Architectura Vitae
+# Bibliotheca — Architectura Vitae
 
-> *"Omnis ars imitatio naturae est."* — Seneca
+> "Omnis ars imitatio naturae est." — Seneca
 
-Welcome to **Bibliotheca**, the unified, offline-first component library and editor core for **Papyrus** (`cvana`), **Sappientus** (`sappientus`), **Imaguncula** (`Imaguncula`), and future document and canvas applications.
+Welcome to **Bibliotheca**, the unified, offline-first component library and editor core for dynamic document studios, publishing workbenches, and interactive canvas applications.
 
 ---
 
-## 🧭 The Four Core Pillars
+## The Six Core Subsystems
 
-Bibliotheca organizes shared code into four distinct subpath exports:
+Bibliotheca organizes all shared code into six isolated subpath exports:
 
-### 1. `@valentium/bibliotheca/ui`
-Visual design tokens, brand assets, and application-level contexts:
-- **`NanoBananaLogo`**: The signature vector amber banana logo with 3D volume, gloss, and sparkles.
-- **`ThemeProvider` & `ThemeSelector`**: Complete Dark (`#0d1117`), Light (`#f7f7f5`), and System themes with live OS detection.
-- **`ToastProvider` & `ConfirmDialog`**: Notification dock with a built-in promise-based `confirmAction()` modal.
-- **`SegmentedControl`**: Animated pill tab switchers with counter badges.
-- **`Button` & `Tooltip`**: Accessible interactive primitives with keyboard shortcut chips.
+### 1. `@valentium/bibliotheca/tokens`
+Formal design tokens, modular spacing, typography, radii, and color contracts:
+- **`ACCENT_THEMES`**: Full definitions for all 7 signature color palettes (Amber Gold, Lateralis Teal, Classic Royal Blue, Executive Navy, Forest Emerald, Burgundy Rose, Obsidian Slate).
+- **`SPACING_TOKENS`**, **`RADIUS_TOKENS`**, **`SHADOW_TOKENS`**: Strict 8-point modular grid and surface geometry definitions.
 
-### 2. `@valentium/bibliotheca/editor`
-The builder shell and form synchronization engine:
-- **`SplitEditorLayout`**: Resizable two-pane layout with pointer capture, min/max clamping, and responsive mobile tabs.
+### 2. `@valentium/bibliotheca/ui`
+Pure, business-agnostic interface primitives:
+- **`Button`**: Primary, secondary, outline, ghost, danger, and pill variants with spinner loaders and slot icons.
+- **`Badge`**: Status tags, category labels, and removable chips with dot indicators.
+- **`Card`**: Structured surfaces with `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, and `CardFooter`.
+- **`Input`**: Accessible text fields with labels, helper text, error messages, prefix/suffix icons, and clear buttons.
+- **`Textarea`**: Multi-line fields with automatic height expansion and character limit counter.
+- **`Switch`**: Accessible toggle switch with ARIA switch semantics.
+- **`Modal`**: Accessible dialogs with portal rendering, backdrop blur, and Escape key handling.
+- **`Drawer`**: Slide-over sheet panels (right, left, bottom) for inspector panels and settings.
+- **`Tabs`**: WAI-ARIA tabbed container with keyboard arrow navigation.
+- **`DropdownMenu`**: Contextual action menus for item manipulation.
+- **`EmptyState`**: Minimalist placeholders for unpopulated lists or empty search queries.
+- **`ThemeProvider` & `ThemeSelector`**: Dual-mode Dark (`#0d1117`), Light (`#f7f7f5`), and System themes with live OS detection.
+- **`AccentSelector`**: Color dot swatches and dropdown selectors for all 7 signature accent themes.
+- **`ToastProvider` & `ConfirmDialog`**: Notification dock with promise-based confirmation modals.
+- **`SegmentedControl`**: Animated pill tab switchers with counter badges and ARIA keyboard support.
+- **`Tooltip`**: Popover hints with keyboard shortcut badges.
+- **`NanoBananaLogo`**: Geometric badge emblem with custom icon slot.
+
+### 3. `@valentium/bibliotheca/editor`
+The builder workbench and form synchronization engine:
+- **`SplitEditorLayout`**: Resizable two-pane split with pointer capture, min/max clamping, and responsive mobile tabs.
 - **`useSectionSync`**: Bi-directional smooth scrolling, auto-focusing inputs, and pulse highlighting.
-- **`BuilderHeader`**: Official editor navigation bar with Latin mottoes, status badges, and action slots.
+- **`BuilderHeader`**: Editor navigation bar with titles, subtitle, status badges, and action slots.
 - **`SectionCard`**: Form section card with collapsing, count badges, and highlight borders.
 
-### 3. `@valentium/bibliotheca/preview`
-High-performance document & canvas viewport:
-- **`PreviewViewport`**: Virtual stage supporting A4, Latin folio, or square canvas dimensions.
+### 4. `@valentium/bibliotheca/preview`
+High-performance document and canvas viewport:
+- **`PreviewViewport`**: Virtual stage supporting standard A4 (794px by 1123px at 96 DPI), folio, or custom canvas dimensions.
 - **`usePanZoom`**: Interactive pan, zoom, spacebar hotkey drag, touch gestures, and responsive auto-fit.
-- **`DockableToolbar`**: Frosted glass floating pill toolbar that snaps and docks to all 4 edges (`bottom`, `right`, `top`, `left`).
-- **`GridOverlay`**: Alignment dots, engineering squares, or transparency checkerboards.
+- **`DockableToolbar`**: Frosted glass floating toolbar that snaps and docks to all 4 edges (bottom, right, top, left).
+- **`GridOverlay`**: Alignment dots, engineering lines, or checkerboards.
+- **`ShortcutsLegendModal`**: Interactive keyboard shortcuts help dialog.
 
-### 4. `@valentium/bibliotheca/export`
+### 5. `@valentium/bibliotheca/export`
 Client-side document and image generation:
-- **`captureElementToCanvas` & `capturePages`**: High-DPI DOM-to-canvas rendering.
-- **`exportElementToPdf`**: Multi-page PDF generation via `jspdf`.
-- **`exportElementToImage`**: PNG, JPEG, or WebP downloads.
-- **`downloadJson` & `promptUploadJson`**: State backups and preset loading.
+- **`exportNodeToPdf`**: Multi-page vector PDF generation with interactive link annotation embedding via `jspdf`.
+- **`captureNodeToCanvas`**: High-DPI DOM-to-canvas rendering via `modern-screenshot`.
+- **`exportNodeToImage`**: PNG and JPEG downloads.
+- **`exportToJson` & `importFromJson`**: File state backups and schema imports.
+
+### 6. `@valentium/bibliotheca/styles.css`
+Tailwind CSS v4 theme variables, dark mode styles, and the 7 signature accent palette classes.

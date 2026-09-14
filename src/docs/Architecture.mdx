@@ -1,0 +1,39 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Bibliotheca/Architecture" />
+
+# Architecture and Subsystem Boundaries
+
+Bibliotheca isolates document editing concerns into cohesive, composable tiers.
+
+---
+
+## Subpath Topology
+
+```
+@valentium/bibliotheca
+├── /tokens   -> Tokens, modular spacing, and accent definitions
+├── /ui       -> Reusable UI primitives (Button, Input, Badge, Card, Modal, Drawer)
+├── /editor   -> Split layout, section cards, sync engine
+├── /preview  -> Document viewport, pan/zoom engine, dockable toolbar
+└── /export   -> High-DPI DOM capture, vector PDF, PNG/JPEG, JSON
+```
+
+---
+
+## State Synchronization Flow
+
+1. User clicks an element in the `PreviewViewport`.
+2. `useSectionSync` matches the element identifier against active `SectionCard` components.
+3. The editor pane automatically scrolls smoothly to center the corresponding `SectionCard`.
+4. The card triggers `highlighted={true}`, animating a pulsing outline ring via `var(--brand-ring)`.
+5. Simultaneously, focus shifts to the target field without causing viewport jump.
+
+---
+
+## Accessibility Compliance
+
+All Bibliotheca components are tested against the W3C Web Content Accessibility Guidelines (WCAG) 2.1 Level AA:
+- Keyboard navigation (Tab, Arrow keys, Home, End, Escape).
+- Accurate ARIA roles (`tablist`, `tab`, `tabpanel`, `switch`, `dialog`).
+- High-visibility focus indicators via `focus-visible:ring-2`.

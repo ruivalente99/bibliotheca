@@ -8,53 +8,53 @@ function ToastDemo() {
 
   const handleConfirm = async () => {
     const ok = await confirmAction({
-      title: "Eliminar Documento?",
-      message: "Esta ação é irreversível e removerá todas as secções permanentemente.",
-      confirmText: "Sim, eliminar",
-      cancelText: "Voltar atrás",
+      title: "Delete Document?",
+      message: "This action cannot be undone and will permanently remove all sections.",
+      confirmText: "Yes, delete",
+      cancelText: "Go back",
       danger: true,
     });
 
     if (ok) {
-      showToast("Documento eliminado com sucesso.", "error");
+      showToast("Document deleted successfully.", "error");
     } else {
-      showToast("Ação cancelada pelo utilizador.", "info");
+      showToast("Action cancelled by user.", "info");
     }
   };
 
   return (
     <div className="flex flex-col gap-4 max-w-md p-6 bg-white dark:bg-[#161b22] rounded-3xl border border-stone-200 dark:border-[#30363d] shadow-xl">
       <h3 className="text-sm font-bold text-stone-800 dark:text-[#f0f3f6]">
-        Disparador Interativo de Notificações
+        Interactive Notification Dispatcher
       </h3>
       <p className="text-xs text-stone-500 dark:text-[#8b949e]">
-        Testa as notificações flutuantes e o diálogo assíncrono de confirmação com suporte à tecla Escape.
+        Test floating toast alerts and the asynchronous confirmation dialog with Escape key dismissal.
       </p>
 
       <div className="flex flex-wrap gap-2 pt-2">
         <Button
           variant="secondary"
-          onClick={() => showToast("Alterações guardadas automaticamente.", "success")}
+          onClick={() => showToast("Changes saved automatically.", "success")}
         >
-          Toast Sucesso
+          Success Toast
         </Button>
         <Button
           variant="secondary"
-          onClick={() => showToast("Falha ao exportar ficheiro LaTeX.", "error")}
+          onClick={() => showToast("Failed to compile document to vector PDF.", "error")}
         >
-          Toast Erro
+          Error Toast
         </Button>
         <Button
           variant="secondary"
-          onClick={() => showToast("Nova versão do perfil carregada.", "info")}
+          onClick={() => showToast("New version of profile loaded.", "info")}
         >
-          Toast Info
+          Info Toast
         </Button>
       </div>
 
       <div className="pt-2 border-t border-stone-100 dark:border-[#21262d]">
         <Button variant="danger" onClick={handleConfirm} className="w-full">
-          Abrir Confirmação Assíncrona
+          Open Asynchronous Confirmation
         </Button>
       </div>
     </div>

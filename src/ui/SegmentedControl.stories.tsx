@@ -16,18 +16,18 @@ type Story = StoryObj<typeof SegmentedControl>;
 
 export const EditorTabs: Story = {
   render: () => {
-    const [tab, setTab] = useState("editor");
+    const [tab, setTab] = useState("settings");
 
     return (
       <SegmentedControl
         value={tab}
         onChange={setTab}
         items={[
-          { id: "editor", label: "Ajustes", icon: Sliders },
-          { id: "background", label: "Fundo", icon: Scissors },
-          { id: "border", label: "Contorno", icon: Sparkles },
-          { id: "text", label: "Texto", icon: Type },
-          { id: "tray", label: "Galeria", icon: Layers, badge: 12 },
+          { id: "settings", label: "Settings", icon: Sliders },
+          { id: "canvas", label: "Canvas", icon: Scissors },
+          { id: "border", label: "Border", icon: Sparkles },
+          { id: "typography", label: "Typography", icon: Type },
+          { id: "layers", label: "Layers", icon: Layers, badge: 12 },
         ]}
       />
     );
@@ -44,8 +44,8 @@ export const MobileModeSwitcher: Story = {
         value={mode}
         onChange={setMode}
         items={[
-          { id: "edit", label: "Editar Formulário" },
-          { id: "preview", label: "Pré-visualizar A4" },
+          { id: "edit", label: "Edit Form" },
+          { id: "preview", label: "Preview A4" },
         ]}
       />
     );

@@ -1,0 +1,63 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Bibliotheca/Design Tokens" />
+
+# Design Tokens Specification
+
+Bibliotheca establishes a strict modular scale across colors, spacing, typography, corner radii, and depth shadows.
+
+---
+
+## 1. Neutral Surface Foundation
+
+| Token | Light Mode | Dark Mode | Role |
+| :--- | :--- | :--- | :--- |
+| `--page` | `#f7f7f5` | `#0d1117` | Canvas backdrop |
+| `--surface-1` | `#ffffff` | `#161b22` | Navigation and toolbars |
+| `--card` | `#ffffff` | `#21262d` | Elevated sections |
+| `--card-soft` | `#fbfaf9` | `#1c2128` | Grouped inputs |
+| `--control-fill` | `#f5f4f1` | `#0d1117` | Segmented control track |
+| `--heading` | `#1c1917` | `#f0f3f6` | High-emphasis text |
+| `--body` | `#57534e` | `#c9d1d9` | Primary body text |
+| `--body-subtle` | `#78716c` | `#8b949e` | Metadata and helper captions |
+| `--border` | `#e7e5e4` | `#363d47` | Outer container borders |
+| `--border-subtle` | `#f5f5f4` | `#21262d` | Inner item dividers |
+
+---
+
+## 2. Signature Color Palettes
+
+Active palette is assigned via `data-accent="<theme>"`:
+
+- **Amber Gold (`amber`)**: Light `#d97706` / Dark `#f59e0b`
+- **Lateralis Teal (`teal`)**: Light `#0f766e` / Dark `#14b8a6`
+- **Classic Royal Blue (`blue`)**: Light `#0284c7` / Dark `#38bdf8`
+- **Executive Navy (`navy`)**: Light `#1e3a8a` / Dark `#60a5fa`
+- **Forest Emerald (`emerald`)**: Light `#059669` / Dark `#10b981`
+- **Burgundy Rose (`rose`)**: Light `#e11d48` / Dark `#fb7185`
+- **Obsidian Slate (`slate`)**: Light `#475569` / Dark `#94a3b8`
+
+---
+
+## 3. Spacing Grid (4px / 8px)
+
+- `1`: 4px (0.25rem)
+- `1.5`: 6px (0.375rem)
+- `2`: 8px (0.5rem)
+- `2.5`: 10px (0.625rem)
+- `3`: 12px (0.75rem)
+- `3.5`: 14px (0.875rem)
+- `4`: 16px (1.0rem)
+- `5`: 20px (1.25rem)
+- `6`: 24px (1.5rem)
+- `8`: 32px (2.0rem)
+
+---
+
+## 4. Corner Geometry
+
+- `rounded-lg`: 8px (small buttons, tooltips)
+- `rounded-xl`: 12px (standard inputs, buttons, tab items)
+- `rounded-2xl`: 16px (section cards, modal dialogs, drawers)
+- `rounded-3xl`: 24px (floating toolbar, bottom sheet headers)
+- `rounded-full`: 9999px (segmented control, status badges)
