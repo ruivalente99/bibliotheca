@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { useTheme, type ThemeMode } from "./ThemeContext";
+import { useOptionalTheme, type ThemeMode, type AccentColor } from "./ThemeContext";
 import { ACCENT_LIST } from "../tokens";
 import { Sun, Moon, Laptop, ChevronDown, Check } from "lucide-react";
 import { cn } from "./utils";
@@ -31,6 +31,16 @@ export interface ThemeSelectorClassNames {
 export interface ThemeSelectorProps {
   /** Display variant: 'dropdown' with label or compact 'toggle' button */
   variant?: "dropdown" | "toggle";
+  /** Controlled theme mode override */
+  theme?: ThemeMode;
+  /** Controlled resolved theme override */
+  resolvedTheme?: "light" | "dark";
+  /** Callback when theme mode changes */
+  onThemeChange?: (theme: ThemeMode) => void;
+  /** Controlled accent override */
+  accent?: AccentColor;
+  /** Callback when accent changes */
+  onAccentChange?: (accent: AccentColor) => void;
   /** Whether to display the accent color swatch selector inside the dropdown. Default: false */
   showAccentPicker?: boolean;
   /** Labels for i18n support */
@@ -49,13 +59,49 @@ export interface ThemeSelectorProps {
 
 export function ThemeSelector({
   variant = "dropdown",
+  theme: controlledTheme,
+  resolvedTheme: controlledResolvedTheme,
+  onThemeChange,
+  accent: controlledAccent,
+  onAccentChange,
   showAccentPicker = false,
   labels = {},
   className = "",
   classNames = {},
   icons = {},
 }: ThemeSelectorProps) {
-  const { theme, setTheme, resolvedTheme, toggleTheme, accent, setAccent } = useTheme();
+  const context = useOptionalTheme();
+  const theme: ThemeMode = controlledTheme ?? context?.theme ?? "system";
+  const resolvedTheme: "light" | "dark" =
+    controlledResolvedTheme ??
+    context?.resolvedTheme ??
+    (theme === "dark" ? "dark" : "light");
+
+  const setTheme = (newTheme: ThemeMode) => {
+    if (onThemeChange) {
+      onThemeChange(newTheme);
+    } else if (context?.setTheme) {
+      context.setTheme(newTheme);
+    }
+  };
+
+  const toggleTheme = () => {
+    if (onThemeChange) {
+      onThemeChange(resolvedTheme === "dark" ? "light" : "dark");
+    } else if (context?.toggleTheme) {
+      context.toggleTheme();
+    }
+  };
+
+  const accent: AccentColor = controlledAccent ?? context?.accent ?? "amber";
+  const setAccent = (newAccent: AccentColor) => {
+    if (onAccentChange) {
+      onAccentChange(newAccent);
+    } else if (context?.setAccent) {
+      context.setAccent(newAccent);
+    }
+  };
+
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
