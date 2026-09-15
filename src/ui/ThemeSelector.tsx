@@ -149,7 +149,7 @@ export function ThemeSelector({
           classNames.root,
           classNames.trigger
         )}
-        aria-label={t.toggleTitle || t.ariaLabel || "Toggle theme"}
+        aria-label={t.ariaLabel || t.toggleTitle || "Toggle theme"}
         title={t.toggleTitle || undefined}
       >
         {resolvedTheme === "dark" ? (
