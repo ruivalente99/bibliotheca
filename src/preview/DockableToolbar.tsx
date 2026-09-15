@@ -167,10 +167,10 @@ export function DockableToolbar({
   };
 
   const dockPositionClasses = {
-    bottom: "bottom-4 left-1/2 -translate-x-1/2 flex-row",
-    top: "top-4 left-1/2 -translate-x-1/2 flex-row",
-    left: "left-4 top-1/2 -translate-y-1/2 flex-col",
-    right: "right-4 top-1/2 -translate-y-1/2 flex-col",
+    bottom: "bottom-4 left-1/2 -translate-x-1/2 flex-row max-w-[calc(100%-1rem)] overflow-x-auto scrollbar-none",
+    top: "top-4 left-1/2 -translate-x-1/2 flex-row max-w-[calc(100%-1rem)] overflow-x-auto scrollbar-none",
+    left: "left-4 top-1/2 -translate-y-1/2 flex-col max-h-[calc(100%-1rem)] overflow-y-auto scrollbar-none",
+    right: "right-4 top-1/2 -translate-y-1/2 flex-col max-h-[calc(100%-1rem)] overflow-y-auto scrollbar-none",
   }[dockEdge];
 
   const isVertical = dockEdge === "left" || dockEdge === "right";
