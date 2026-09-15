@@ -58,7 +58,6 @@ export function usePanZoom({
     panX: 0,
     panY: 0,
   });
-  const pinchStartRef = useRef<{ distance: number; initialZoom: number } | null>(null);
 
   const setZoom = useCallback(
     (newZoom: number) => {

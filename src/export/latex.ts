@@ -60,11 +60,15 @@ export function escapeLatex(text: string | undefined | null): string {
  */
 export function sanitizeLatex(text: string | undefined | null): string {
   if (!text) return "";
-  // eslint-disable-next-line no-control-regex
-  return text
-    .replace(/[\u0000-\u0008\u000B-\u000C\u000E-\u001F\u007F]/g, "")
-    .replace(/[ \t]+/g, " ")
-    .trim();
+  let clean = "";
+  for (let i = 0; i < text.length; i++) {
+    const code = text.charCodeAt(i);
+    if (code <= 8 || code === 11 || code === 12 || (code >= 14 && code <= 31) || code === 127) {
+      continue;
+    }
+    clean += text[i];
+  }
+  return clean.replace(/[ \t]+/g, " ").trim();
 }
 
 /**

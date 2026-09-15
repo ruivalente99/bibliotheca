@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { useTheme, type ThemeMode, type AccentColor } from "./ThemeContext";
+import { useTheme, type ThemeMode } from "./ThemeContext";
 import { ACCENT_LIST } from "../tokens";
 import { Sun, Moon, Laptop, ChevronDown, Check } from "lucide-react";
 import { cn } from "./utils";
