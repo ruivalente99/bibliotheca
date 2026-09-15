@@ -12,6 +12,8 @@ export interface GridOverlayProps {
   variant?: GridVariant;
   /** Opacity factor between 0 and 1. Default: 0.6 */
   opacity?: number;
+  /** Optional safety margin inset in pixels, drawn as a dashed boundary guide */
+  safetyMarginPx?: number;
   className?: string;
 }
 
@@ -19,6 +21,7 @@ export function GridOverlay({
   visible = true,
   variant = "dots",
   opacity = 0.6,
+  safetyMarginPx,
   className = "",
 }: GridOverlayProps) {
   if (!visible) return null;
@@ -52,6 +55,15 @@ export function GridOverlay({
         "absolute inset-0 pointer-events-none z-10 transition-opacity duration-200",
         className
       )}
-    />
+    >
+      {safetyMarginPx !== undefined && safetyMarginPx > 0 && (
+        <div
+          style={{
+            inset: `${safetyMarginPx}px`,
+          }}
+          className="absolute border border-dashed border-amber-500/50 pointer-events-none"
+        />
+      )}
+    </div>
   );
 }
