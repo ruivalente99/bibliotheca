@@ -3,7 +3,8 @@ import { cn, generateId } from "../ui/utils";
 
 describe("ui/utils", () => {
   it("merges class names correctly", () => {
-    const result = cn("text-red-500", "bg-black", false && "hidden");
+    const isHidden = false as boolean;
+    const result = cn("text-red-500", "bg-black", isHidden && "hidden");
     expect(result).toBe("text-red-500 bg-black");
   });
 

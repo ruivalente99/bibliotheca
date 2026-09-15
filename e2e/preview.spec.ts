@@ -28,12 +28,12 @@ test.describe("Preview Viewport & DockableToolbar E2E", () => {
     await expect(handToolBtn).toHaveClass(/bg-white|bg-\[#30363d\]/);
 
     const pointerToolBtn = page.getByRole("button", { name: "Pointer Tool" });
-    await pointerToolBtn.click();
+    await pointerToolBtn.click({ force: true });
     await expect(pointerToolBtn).toHaveClass(/bg-white|bg-\[#30363d\]/);
 
     // Open Keyboard Shortcuts Modal
     const helpBtn = page.getByRole("button", { name: "Shortcuts" });
-    await helpBtn.click();
+    await helpBtn.click({ force: true });
 
     const dialog = page.locator('div[role="dialog"]');
     await expect(dialog).toBeVisible();

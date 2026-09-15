@@ -25,6 +25,10 @@ export interface PreviewViewportProps {
   showGrid?: boolean;
   /** Visual style of the grid */
   gridVariant?: GridVariant;
+  /** Optional safety margin inset guide in pixels (e.g. 16px for WhatsApp stickers) */
+  safetyMarginPx?: number;
+  /** Whether to render a transparency checkerboard background */
+  checkerboard?: boolean;
   /** Callback when grid visibility is toggled */
   onToggleGrid?: () => void;
   /** Initial dock edge position for the floating toolbar */
@@ -48,6 +52,8 @@ export function PreviewViewport({
   panZoomOptions,
   showGrid = false,
   gridVariant = "dots",
+  safetyMarginPx,
+  checkerboard = false,
   onToggleGrid,
   defaultDockEdge = "bottom",
   toolbarActions,
@@ -68,6 +74,8 @@ export function PreviewViewport({
     zoomOut,
     resetView,
     fitToScreen,
+    fitToWidth,
+    isAutoFit,
     setToolMode,
     handlePointerDown,
     handlePointerMove,
@@ -108,8 +116,12 @@ export function PreviewViewport({
         classNames.root
       )}
     >
-      {/* Background Alignment Grid Overlay */}
-      <GridOverlay visible={showGrid} variant={gridVariant} />
+      {/* Background Alignment Grid Overlay / Checkerboard */}
+      <GridOverlay
+        visible={showGrid || checkerboard}
+        variant={checkerboard ? "checkerboard" : gridVariant}
+        safetyMarginPx={safetyMarginPx}
+      />
 
       {/* Scaled & Panned Document Stage */}
       <div
@@ -131,6 +143,8 @@ export function PreviewViewport({
         onZoomOut={zoomOut}
         onResetView={resetView}
         onFitToScreen={fitToScreen}
+        onFitToWidth={fitToWidth}
+        isAutoFit={isAutoFit}
         toolMode={toolMode}
         onToolModeChange={setToolMode}
         showGrid={showGrid}

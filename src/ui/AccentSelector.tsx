@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { useTheme, type AccentColor } from "./ThemeContext";
+import { useOptionalTheme, type AccentColor } from "./ThemeContext";
 import { ACCENT_THEMES, ACCENT_LIST } from "../tokens";
 import { Check, ChevronDown, Palette } from "lucide-react";
 import { cn } from "./utils";
@@ -39,16 +39,17 @@ export function AccentSelector({
   className = "",
   classNames = {},
 }: AccentSelectorProps) {
-  const { accent: contextAccent, setAccent: contextSetAccent, resolvedTheme } = useTheme();
-  const activeAccent = controlledValue ?? contextAccent;
+  const context = useOptionalTheme();
+  const activeAccent = controlledValue ?? context?.accent ?? "amber";
+  const resolvedTheme = context?.resolvedTheme ?? "light";
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSelect = (accent: AccentColor) => {
     if (onChange) {
       onChange(accent);
-    } else {
-      contextSetAccent(accent);
+    } else if (context?.setAccent) {
+      context.setAccent(accent);
     }
     setIsOpen(false);
   };

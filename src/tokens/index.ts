@@ -227,3 +227,44 @@ export const SHADOW_TOKENS = {
   lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
   xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
 } as const;
+
+export type PageFormatKey = "a4" | "letter" | "square512";
+
+export interface PageFormatDefinition {
+  id: PageFormatKey;
+  label: string;
+  widthPx: number;
+  heightPx: number;
+  unit: "mm" | "px";
+  widthMm?: number;
+  heightMm?: number;
+}
+
+export const PAGE_FORMATS: Record<PageFormatKey, PageFormatDefinition> = {
+  a4: {
+    id: "a4",
+    label: "A4",
+    widthPx: 794,
+    heightPx: 1123,
+    unit: "mm",
+    widthMm: 210,
+    heightMm: 297,
+  },
+  letter: {
+    id: "letter",
+    label: "US Letter",
+    widthPx: 816,
+    heightPx: 1056,
+    unit: "mm",
+    widthMm: 215.9,
+    heightMm: 279.4,
+  },
+  square512: {
+    id: "square512",
+    label: "Square (512x512)",
+    widthPx: 512,
+    heightPx: 512,
+    unit: "px",
+  },
+} as const;
+

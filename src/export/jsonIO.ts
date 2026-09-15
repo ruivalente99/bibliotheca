@@ -36,7 +36,7 @@ export function promptUploadJson<T = unknown>(): Promise<T> {
           const content = event.target?.result as string;
           const parsed = JSON.parse(content) as T;
           resolve(parsed);
-        } catch (err) {
+        } catch {
           reject(new Error("Invalid JSON file format"));
         }
       };

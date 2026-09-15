@@ -10,7 +10,7 @@ function ToolbarDemo() {
   const [showGrid, setShowGrid] = useState(false);
 
   return (
-    <div className="relative w-full h-[450px] bg-stone-100 dark:bg-[#0d1117] rounded-3xl border border-stone-200 dark:border-[#30363d] overflow-hidden flex items-center justify-center p-8">
+    <div className="relative w-full max-w-4xl h-[450px] bg-stone-100 dark:bg-[#0d1117] rounded-3xl border border-stone-200 dark:border-[#30363d] flex items-center justify-center p-2 sm:p-8">
       <div className="text-center space-y-2">
         <p className="text-sm font-bold text-stone-700 dark:text-[#f0f3f6]">
           Barra de Ferramentas com Ancoragem em 4 Cantos
@@ -31,7 +31,7 @@ function ToolbarDemo() {
         showGrid={showGrid}
         onToggleGrid={() => setShowGrid(!showGrid)}
         extraActions={
-          <Button variant="primary" size="sm" iconLeft={<Download size={12} />}>
+          <Button variant="primary" size="sm" iconLeft={<Download size={12} />} className="hidden sm:inline-flex">
             Exportar
           </Button>
         }

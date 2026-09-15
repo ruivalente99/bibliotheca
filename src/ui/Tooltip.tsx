@@ -66,6 +66,13 @@ export function Tooltip({
     right: "translate(0%, -50%)",
   }[side];
 
+  const originClass = {
+    top: "origin-bottom",
+    bottom: "origin-top",
+    left: "origin-right",
+    right: "origin-left",
+  }[side];
+
   return (
     <div
       ref={triggerRef}
@@ -89,7 +96,8 @@ export function Tooltip({
               transform: transformStyle,
             }}
             className={cn(
-              "z-[9999] pointer-events-none px-2.5 py-1 rounded-lg bg-stone-900/95 dark:bg-[#161b22]/95 backdrop-blur-md text-white border border-stone-700/60 dark:border-[#363d47] text-[10.5px] font-semibold shadow-xl whitespace-nowrap flex items-center gap-1.5 animate-in fade-in duration-100 select-none",
+              "z-[9999] pointer-events-none px-2.5 py-1 rounded-lg bg-stone-900/95 dark:bg-[#161b22]/95 backdrop-blur-md text-white border border-stone-700/60 dark:border-[#363d47] text-[10.5px] font-semibold shadow-xl whitespace-nowrap flex items-center gap-1.5 animate-in fade-in zoom-in-95 duration-125 ease-out select-none",
+              originClass,
               classNames.tooltip
             )}
           >
