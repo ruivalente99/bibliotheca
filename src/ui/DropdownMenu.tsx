@@ -67,8 +67,6 @@ export function DropdownMenu({
     };
   }, [isOpen]);
 
-  const alignmentClass = align === "left" ? "left-0" : "right-0";
-
   return (
     <div ref={containerRef} className={cn("relative inline-block", className, classNames.root)}>
       <div
@@ -83,9 +81,9 @@ export function DropdownMenu({
           role="menu"
           aria-orientation="vertical"
           className={cn(
-            "absolute mt-1.5 w-48 rounded-2xl shadow-xl p-1.5 z-50 animate-in fade-in duration-100",
+            "absolute mt-1.5 w-48 rounded-2xl shadow-xl p-1.5 z-50 animate-in fade-in zoom-in-95 duration-150 ease-out",
+            align === "left" ? "left-0 origin-top-left" : "right-0 origin-top-right",
             "bg-white dark:bg-[#161b22] border border-stone-200 dark:border-[#30363d] text-[var(--heading)]",
-            alignmentClass,
             classNames.menu
           )}
         >

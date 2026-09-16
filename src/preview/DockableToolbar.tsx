@@ -5,6 +5,7 @@ import {
   ZoomIn,
   ZoomOut,
   Maximize2,
+  MoveHorizontal,
   Hand,
   MousePointer,
   RotateCcw,
@@ -25,6 +26,7 @@ export interface DockableToolbarLabels {
   zoomIn?: React.ReactNode;
   resetZoom?: React.ReactNode;
   fitScreen?: React.ReactNode;
+  fitWidth?: React.ReactNode;
   toggleGrid?: React.ReactNode;
   shortcutsHelp?: React.ReactNode;
   dragGripTitle?: string;
@@ -53,6 +55,10 @@ export interface DockableToolbarProps {
   onResetView?: () => void;
   /** Auto-fit to viewport callback */
   onFitToScreen?: () => void;
+  /** Fit to width callback */
+  onFitToWidth?: () => void;
+  /** Whether auto-fit is currently active */
+  isAutoFit?: boolean;
   /** Active pointer navigation tool: 'pointer' or 'hand' */
   toolMode?: "pointer" | "hand";
   /** Tool mode change handler */
@@ -81,6 +87,8 @@ export function DockableToolbar({
   onZoomOut,
   onResetView,
   onFitToScreen,
+  onFitToWidth,
+  isAutoFit = false,
   toolMode = "pointer",
   onToolModeChange,
   showGrid = false,
@@ -104,6 +112,7 @@ export function DockableToolbar({
     zoomIn: labels.zoomIn ?? "Zoom in",
     resetZoom: labels.resetZoom ?? "Reset 100%",
     fitScreen: labels.fitScreen ?? "Fit to screen",
+    fitWidth: labels.fitWidth ?? "Fit to width",
     toggleGrid: labels.toggleGrid ?? "Toggle grid",
     shortcutsHelp: labels.shortcutsHelp ?? "Shortcuts",
     dragGripTitle: labels.dragGripTitle ?? "Drag to dock / Double-click to cycle",
@@ -158,10 +167,10 @@ export function DockableToolbar({
   };
 
   const dockPositionClasses = {
-    bottom: "bottom-4 left-1/2 -translate-x-1/2 flex-row",
-    top: "top-4 left-1/2 -translate-x-1/2 flex-row",
-    left: "left-4 top-1/2 -translate-y-1/2 flex-col",
-    right: "right-4 top-1/2 -translate-y-1/2 flex-col",
+    bottom: "bottom-4 left-1/2 -translate-x-1/2 flex-row max-w-[calc(100%-1rem)] overflow-x-auto scrollbar-none",
+    top: "top-4 left-1/2 -translate-x-1/2 flex-row max-w-[calc(100%-1rem)] overflow-x-auto scrollbar-none",
+    left: "left-4 top-1/2 -translate-y-1/2 flex-col max-h-[calc(100%-1rem)] overflow-y-auto scrollbar-none",
+    right: "right-4 top-1/2 -translate-y-1/2 flex-col max-h-[calc(100%-1rem)] overflow-y-auto scrollbar-none",
   }[dockEdge];
 
   const isVertical = dockEdge === "left" || dockEdge === "right";
@@ -276,10 +285,32 @@ export function DockableToolbar({
             <button
               type="button"
               onClick={onFitToScreen}
-              className={cn("p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer", classNames.button)}
+              className={cn(
+                "p-1.5 rounded-full transition-transform active:scale-[0.97] cursor-pointer",
+                isAutoFit
+                  ? cn("bg-[var(--brand-soft)] text-[var(--brand)] font-bold", classNames.buttonActive)
+                  : "hover:bg-stone-100 dark:hover:bg-[#21262d]",
+                classNames.button
+              )}
               aria-label="Fit Screen"
             >
               <Maximize2 size={13} />
+            </button>
+          </CanvasTooltip>
+        )}
+
+        {onFitToWidth && (
+          <CanvasTooltip label={t.fitWidth} shortcut="W" side={tooltipSide}>
+            <button
+              type="button"
+              onClick={onFitToWidth}
+              className={cn(
+                "p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-transform active:scale-[0.97] cursor-pointer",
+                classNames.button
+              )}
+              aria-label="Fit Width"
+            >
+              <MoveHorizontal size={13} />
             </button>
           </CanvasTooltip>
         )}
@@ -289,7 +320,7 @@ export function DockableToolbar({
             <button
               type="button"
               onClick={onResetView}
-              className={cn("p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-colors cursor-pointer", classNames.button)}
+              className={cn("p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-transform active:scale-[0.97] cursor-pointer", classNames.button)}
               aria-label="Reset Zoom"
             >
               <RotateCcw size={13} />

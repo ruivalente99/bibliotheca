@@ -171,6 +171,10 @@ export function ThemeProvider({
   );
 }
 
+export function useOptionalTheme(): ThemeContextType | undefined {
+  return useContext(ThemeContext);
+}
+
 export function useTheme(): ThemeContextType {
   const context = useContext(ThemeContext);
   if (!context) {

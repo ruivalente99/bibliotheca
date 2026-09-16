@@ -30,6 +30,7 @@ export interface UsePanZoomReturn {
   zoomOut: () => void;
   resetView: () => void;
   fitToScreen: () => void;
+  fitToWidth: () => void;
   handlePointerDown: (e: React.PointerEvent<HTMLDivElement>) => void;
   handlePointerMove: (e: React.PointerEvent<HTMLDivElement>) => void;
   handlePointerUp: (e: React.PointerEvent<HTMLDivElement>) => void;
@@ -57,7 +58,6 @@ export function usePanZoom({
     panX: 0,
     panY: 0,
   });
-  const pinchStartRef = useRef<{ distance: number; initialZoom: number } | null>(null);
 
   const setZoom = useCallback(
     (newZoom: number) => {
@@ -102,6 +102,19 @@ export function usePanZoom({
     setPan({ x: 0, y: 0 });
     setIsAutoFit(true);
   }, [docWidth, docHeight, minZoom]);
+
+  const fitToWidth = useCallback(() => {
+    const container = viewportRef.current;
+    if (!container) return;
+    const width = container.clientWidth;
+    if (!width) return;
+    const margin = width < 640 ? 16 : 40;
+    const availableW = Math.max(100, width - margin * 2);
+    const scale = Math.max(minZoom, Math.min(2.0, Number((availableW / docWidth).toFixed(2))));
+    setZoomState(scale);
+    setPan({ x: 0, y: 0 });
+    setIsAutoFit(false);
+  }, [docWidth, minZoom]);
 
   // Recalculate auto-fit on container resize
   useEffect(() => {
@@ -212,6 +225,7 @@ export function usePanZoom({
     zoomOut,
     resetView,
     fitToScreen,
+    fitToWidth,
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
