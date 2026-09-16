@@ -68,6 +68,22 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       lg: "text-sm py-2.5 px-4 rounded-2xl",
     }[size];
 
+    const paddingLeftClass = iconLeft
+      ? {
+          sm: "pl-8",
+          md: "pl-9",
+          lg: "pl-11",
+        }[size]
+      : "";
+
+    const paddingRightClass = (iconRight || (clearable && hasValue))
+      ? {
+          sm: "pr-8",
+          md: "pr-9",
+          lg: "pr-11",
+        }[size]
+      : "";
+
     return (
       <div className={cn("w-full space-y-1.5", className, classNames.root)}>
         {label && (
@@ -86,7 +102,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {iconLeft && (
             <div
               className={cn(
-                "absolute left-3 flex items-center justify-center pointer-events-none text-stone-400 dark:text-[#8b949e]",
+                "absolute flex items-center justify-center pointer-events-none text-stone-400 dark:text-[#8b949e]",
+                size === "sm" ? "left-2.5" : size === "lg" ? "left-3.5" : "left-3",
                 classNames.iconLeft
               )}
             >
@@ -109,9 +126,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)] focus-visible:border-[var(--brand)]",
               "disabled:opacity-50 disabled:bg-stone-50 dark:disabled:bg-[#0d1117] disabled:cursor-not-allowed",
               hasError && "border-rose-500 focus-visible:ring-rose-500/30 focus-visible:border-rose-500",
-              iconLeft ? "pl-9" : "",
-              (iconRight || (clearable && hasValue)) ? "pr-9" : "",
               sizeClasses,
+              paddingLeftClass,
+              paddingRightClass,
               classNames.input
             )}
             {...props}
@@ -134,7 +151,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {!clearable && iconRight && (
             <div
               className={cn(
-                "absolute right-3 flex items-center justify-center pointer-events-none text-stone-400 dark:text-[#8b949e]",
+                "absolute flex items-center justify-center pointer-events-none text-stone-400 dark:text-[#8b949e]",
+                size === "sm" ? "right-2.5" : size === "lg" ? "right-3.5" : "right-3",
                 classNames.iconRight
               )}
             >

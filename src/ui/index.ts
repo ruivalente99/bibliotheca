@@ -1,4 +1,5 @@
 export * from "./utils";
+export * from "./Logo";
 export * from "./NanoBananaLogo";
 export * from "./ThemeContext";
 export * from "./ThemeSelector";

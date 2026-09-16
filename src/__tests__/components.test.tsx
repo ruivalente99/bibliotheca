@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import React from "react";
 import { renderToString } from "react-dom/server";
+import { Logo } from "../ui/Logo";
 import { NanoBananaLogo } from "../ui/NanoBananaLogo";
 import { Button } from "../ui/Button";
 import { SegmentedControl } from "../ui/SegmentedControl";
@@ -15,6 +16,25 @@ import { AccentSelector } from "../ui/AccentSelector";
 import { ThemeProvider } from "../ui/ThemeContext";
 
 describe("UI Components SSR rendering", () => {
+  it("renders Logo container with icon and accessible attributes", () => {
+    const html = renderToString(
+      <Logo size="lg" glow icon={<span className="test-icon">Icon</span>} ariaLabel="App Logo" />
+    );
+    expect(html).toContain('role="img"');
+    expect(html).toContain('aria-label="App Logo"');
+    expect(html).toContain("test-icon");
+    expect(html).toContain("w-12 h-12");
+  });
+
+  it("renders Logo with image source", () => {
+    const html = renderToString(
+      <Logo size="md" src="/logo.png" alt="Company Logo" />
+    );
+    expect(html).toContain("<img");
+    expect(html).toContain('src="/logo.png"');
+    expect(html).toContain('alt="Company Logo"');
+  });
+
   it("renders NanoBananaLogo with accessible attributes", () => {
     const html = renderToString(<NanoBananaLogo size="md" glow ariaLabel="Brand Logo" />);
     expect(html).toContain('role="img"');
@@ -96,6 +116,18 @@ describe("UI Components SSR rendering", () => {
     );
     expect(errorHtml).toContain("Invalid email address");
     expect(errorHtml).toContain("aria-invalid=\"true\"");
+  });
+
+  it("renders Input with left icon ensuring paddingLeft overrides size padding", () => {
+    const html = renderToString(
+      <Input
+        label="Search"
+        iconLeft={<span className="search-icon">S</span>}
+        size="md"
+      />
+    );
+    expect(html).toContain("search-icon");
+    expect(html).toContain("pl-9");
   });
 
   it("renders Textarea with character count limit", () => {

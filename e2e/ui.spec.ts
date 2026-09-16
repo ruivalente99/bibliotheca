@@ -1,6 +1,13 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("UI Components E2E", () => {
+  test("Logo renders properly in all sizes", async ({ page }) => {
+    await page.goto("/iframe.html?id=ui-logo--all-sizes&viewMode=story");
+    const logos = page.locator('div[role="img"]');
+    await expect(logos).toHaveCount(4);
+    await expect(logos.first()).toBeVisible();
+  });
+
   test("NanoBananaLogo renders properly in all sizes", async ({ page }) => {
     await page.goto("/iframe.html?id=ui-nanobananalogo--all-sizes&viewMode=story");
     const logos = page.locator('div[role="img"]');

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { NanoBananaLogo } from "../ui/NanoBananaLogo";
+import { Logo } from "../ui/Logo";
 import { ThemeSelector } from "../ui/ThemeSelector";
 import { cn } from "../ui/utils";
 
@@ -39,7 +39,7 @@ export interface BuilderHeaderProps {
 export function BuilderHeader({
   title,
   subtitle,
-  logo = <NanoBananaLogo size="md" glow />,
+  logo = <Logo size="md" glow />,
   statusText,
   actions,
   extraUtilities,

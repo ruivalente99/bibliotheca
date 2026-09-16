@@ -3,6 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 
 test.describe("Accessibility (a11y) WCAG 2.1 Audits", () => {
   const storiesToAudit = [
+    { id: "ui-logo--all-sizes", name: "Logo" },
     { id: "ui-nanobananalogo--all-sizes", name: "NanoBananaLogo" },
     { id: "ui-button--all-variants", name: "Button" },
     { id: "ui-segmentedcontrol--editor-tabs", name: "SegmentedControl" },

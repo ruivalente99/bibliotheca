@@ -71,8 +71,10 @@ export interface DockableToolbarProps {
   defaultDockEdge?: DockEdge;
   /** Parent container reference for edge detection during dragging */
   containerRef?: React.RefObject<HTMLDivElement | null>;
-  /** Custom export buttons or extra action slot */
-  extraActions?: React.ReactNode;
+  /** Custom export buttons or extra action slot (node or render function) */
+  extraActions?:
+    | React.ReactNode
+    | ((props: { isVertical: boolean; dockEdge: DockEdge }) => React.ReactNode);
   /** Configurable labels for tooltips and accessible titles */
   labels?: DockableToolbarLabels;
   /** Optional keyboard shortcuts list displayed in help modal */
@@ -167,10 +169,10 @@ export function DockableToolbar({
   };
 
   const dockPositionClasses = {
-    bottom: "bottom-4 left-1/2 -translate-x-1/2 flex-row max-w-[calc(100%-1rem)] overflow-x-auto scrollbar-none",
-    top: "top-4 left-1/2 -translate-x-1/2 flex-row max-w-[calc(100%-1rem)] overflow-x-auto scrollbar-none",
-    left: "left-4 top-1/2 -translate-y-1/2 flex-col max-h-[calc(100%-1rem)] overflow-y-auto scrollbar-none",
-    right: "right-4 top-1/2 -translate-y-1/2 flex-col max-h-[calc(100%-1rem)] overflow-y-auto scrollbar-none",
+    bottom: "bottom-4 left-1/2 -translate-x-1/2 flex-row max-w-[calc(100%-1rem)] overflow-visible",
+    top: "top-4 left-1/2 -translate-x-1/2 flex-row max-w-[calc(100%-1rem)] overflow-visible",
+    left: "left-4 top-1/2 -translate-y-1/2 flex-col max-h-[calc(100%-1rem)] overflow-y-auto scrollbar-none w-fit",
+    right: "right-4 top-1/2 -translate-y-1/2 flex-col max-h-[calc(100%-1rem)] overflow-y-auto scrollbar-none w-fit",
   }[dockEdge];
 
   const isVertical = dockEdge === "left" || dockEdge === "right";
@@ -305,7 +307,7 @@ export function DockableToolbar({
               type="button"
               onClick={onFitToWidth}
               className={cn(
-                "p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-transform active:scale-[0.97] cursor-pointer",
+                "hidden sm:inline-flex p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-transform active:scale-[0.97] cursor-pointer",
                 classNames.button
               )}
               aria-label="Fit Width"
@@ -320,7 +322,7 @@ export function DockableToolbar({
             <button
               type="button"
               onClick={onResetView}
-              className={cn("p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-transform active:scale-[0.97] cursor-pointer", classNames.button)}
+              className={cn("hidden sm:inline-flex p-1.5 rounded-full hover:bg-stone-100 dark:hover:bg-[#21262d] transition-transform active:scale-[0.97] cursor-pointer", classNames.button)}
               aria-label="Reset Zoom"
             >
               <RotateCcw size={13} />
@@ -331,13 +333,13 @@ export function DockableToolbar({
         {/* Grid toggle */}
         {onToggleGrid && (
           <>
-            <div className={cn("bg-stone-200 dark:bg-[#30363d]", isVertical ? "w-4 h-[1px] my-0.5" : "w-[1px] h-4 mx-0.5", classNames.divider)} />
+            <div className={cn("hidden sm:block bg-stone-200 dark:bg-[#30363d]", isVertical ? "w-4 h-[1px] my-0.5" : "w-[1px] h-4 mx-0.5", classNames.divider)} />
             <CanvasTooltip label={t.toggleGrid} shortcut="G" side={tooltipSide}>
               <button
                 type="button"
                 onClick={onToggleGrid}
                 className={cn(
-                  "p-1.5 rounded-full transition-all cursor-pointer",
+                  "hidden sm:inline-flex p-1.5 rounded-full transition-all cursor-pointer",
                   showGrid
                     ? cn("bg-[var(--brand-soft)] text-[var(--brand)] font-bold", classNames.buttonActive)
                     : "hover:bg-stone-100 dark:hover:bg-[#21262d]",
@@ -355,8 +357,16 @@ export function DockableToolbar({
         {extraActions && (
           <>
             <div className={cn("bg-stone-200 dark:bg-[#30363d]", isVertical ? "w-4 h-[1px] my-0.5" : "w-[1px] h-4 mx-0.5", classNames.divider)} />
-            <div className={cn("flex items-center gap-1", isVertical ? "flex-col" : "flex-row", classNames.extraActions)}>
-              {extraActions}
+            <div
+              className={cn(
+                "flex items-center gap-1 shrink-0",
+                isVertical
+                  ? "flex-col [&_button]:!p-1.5 [&_button]:!rounded-full [&_button]:!w-7 [&_button]:!h-7 [&_button]:!min-w-0 [&_button]:!gap-0 [&_.truncate]:!hidden"
+                  : "flex-row max-sm:[&_.truncate]:!hidden max-sm:[&_button]:!p-1.5 max-sm:[&_button]:!rounded-full max-sm:[&_button]:!w-7 max-sm:[&_button]:!h-7 max-sm:[&_button]:!min-w-0 max-sm:[&_button]:!gap-0",
+                classNames.extraActions
+              )}
+            >
+              {typeof extraActions === "function" ? extraActions({ isVertical, dockEdge }) : extraActions}
             </div>
           </>
         )}

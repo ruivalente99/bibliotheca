@@ -30,11 +30,17 @@ function ToolbarDemo() {
         onToolModeChange={setToolMode}
         showGrid={showGrid}
         onToggleGrid={() => setShowGrid(!showGrid)}
-        extraActions={
-          <Button variant="primary" size="sm" iconLeft={<Download size={12} />} className="hidden sm:inline-flex">
-            Exportar
+        extraActions={({ isVertical }) => (
+          <Button
+            variant="primary"
+            size={isVertical ? "icon" : "sm"}
+            iconLeft={<Download size={13} />}
+            aria-label="Exportar"
+            title="Exportar"
+          >
+            {!isVertical && "Exportar"}
           </Button>
-        }
+        )}
       />
     </div>
   );
