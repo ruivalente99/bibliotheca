@@ -21,7 +21,9 @@ pnpm-debug.log*
 .env.local
 .DS_Store
 *.local
+.vercel
 
 # IDE
 .vscode/
 .idea/
+.env*.local
