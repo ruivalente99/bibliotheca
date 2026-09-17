@@ -123,3 +123,44 @@ export const SizeVariants: Story = {
     );
   },
 };
+
+export const SliderScale: Story = {
+  render: () => {
+    const [scale, setScale] = useState("md");
+
+    return (
+      <div className="flex flex-col gap-4 items-center">
+        <FontSizeSelector
+          variant="slider"
+          value={scale}
+          onChange={setScale}
+          options={DEFAULT_SCALE_OPTIONS}
+          label="Reading Scale"
+          showIcon
+        />
+        <p className="text-xs text-stone-500 font-mono">Selected scale: {scale}</p>
+      </div>
+    );
+  },
+};
+
+export const SlideDensity: Story = {
+  render: () => {
+    const [density, setDensity] = useState("normal");
+
+    return (
+      <div className="flex flex-col gap-4 items-center">
+        <FontSizeSelector
+          variant="slide"
+          size="sm"
+          value={density}
+          onChange={setDensity}
+          options={DEFAULT_DENSITY_OPTIONS}
+          showIcon
+        />
+        <p className="text-xs text-stone-500 font-mono">Selected density: {density}</p>
+      </div>
+    );
+  },
+};
+

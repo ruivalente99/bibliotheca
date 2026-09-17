@@ -39,6 +39,9 @@ export interface FontSizeSelectorClassNames {
   dropdownTrigger?: string;
   dropdownMenu?: string;
   dropdownItem?: string;
+  slider?: string;
+  sliderValue?: string;
+  sliderMinMax?: string;
   icon?: string;
   badge?: string;
 }
@@ -50,8 +53,8 @@ export interface FontSizeSelectorProps<T extends string = string> {
   onChange: (value: T) => void;
   /** Available font size options. Defaults to 3-tier density scale (compact, normal, spacious) */
   options?: Array<FontSizeOption<T>>;
-  /** Visual presentation variant: 'segmented' (pills), 'stepper' (- / +), 'dropdown' (select popover), 'buttons' */
-  variant?: "segmented" | "stepper" | "dropdown" | "buttons";
+  /** Visual presentation variant: 'segmented' (pills), 'stepper' (- / +), 'dropdown' (select popover), 'buttons', 'slider' / 'slide' */
+  variant?: "segmented" | "stepper" | "dropdown" | "buttons" | "slider" | "slide";
   /** Size of the selector component */
   size?: "xs" | "sm" | "md" | "lg";
   /** Optional visible title/label */
@@ -225,6 +228,9 @@ export function FontSizeSelector<T extends string = string>({
       button: "px-2 py-0.5 text-[10px]",
       stepperBtn: "w-5 h-5 min-w-[20px] min-h-[20px]",
       stepperValue: "px-2 text-[10px] min-w-[28px]",
+      sliderWidth: "w-20",
+      sliderHeight: "h-1",
+      sliderValue: "text-[10px] min-w-[24px]",
       icon: 10,
     },
     sm: {
@@ -232,6 +238,9 @@ export function FontSizeSelector<T extends string = string>({
       button: "px-2.5 py-0.5 text-[11px]",
       stepperBtn: "w-6 h-6 min-w-[24px] min-h-[24px]",
       stepperValue: "px-2.5 text-[11px] min-w-[32px]",
+      sliderWidth: "w-24",
+      sliderHeight: "h-1.5",
+      sliderValue: "text-[11px] min-w-[28px]",
       icon: 12,
     },
     md: {
@@ -239,6 +248,9 @@ export function FontSizeSelector<T extends string = string>({
       button: "px-3 py-1 text-xs",
       stepperBtn: "w-7 h-7 min-w-[28px] min-h-[28px]",
       stepperValue: "px-3 text-xs min-w-[38px]",
+      sliderWidth: "w-28",
+      sliderHeight: "h-1.5",
+      sliderValue: "text-xs min-w-[32px]",
       icon: 14,
     },
     lg: {
@@ -246,6 +258,9 @@ export function FontSizeSelector<T extends string = string>({
       button: "px-4 py-1.5 text-sm",
       stepperBtn: "w-8 h-8 min-w-[32px] min-h-[32px]",
       stepperValue: "px-4 text-sm min-w-[46px]",
+      sliderWidth: "w-36",
+      sliderHeight: "h-2",
+      sliderValue: "text-sm min-w-[40px]",
       icon: 16,
     },
   }[size];
@@ -426,7 +441,104 @@ export function FontSizeSelector<T extends string = string>({
     );
   }
 
-  // 3. SEGMENTED CONTROL / BUTTONS VARIANT (Default)
+  // 3. SLIDER / SLIDE VARIANT
+  if (variant === "slider" || variant === "slide") {
+    const minOption = resolvedOptions[0];
+    const maxOption = resolvedOptions[resolvedOptions.length - 1];
+
+    return (
+      <div
+        className={cn("inline-flex items-center gap-2", className, classNames.root)}
+        aria-label={labels.ariaLabel || ariaLabel}
+      >
+        {(label || labels.title) && (
+          <span className={cn("font-medium text-stone-600 dark:text-[#8b949e] select-none", sizeClasses.root, classNames.label)}>
+            {label || labels.title}
+          </span>
+        )}
+        <div
+          ref={containerRef}
+          role="group"
+          aria-label={labels.ariaLabel || ariaLabel}
+          className={cn(
+            "inline-flex items-center gap-2 bg-stone-100/90 dark:bg-[#161b22]/90 backdrop-blur-md rounded-full px-2.5 py-1 border border-stone-200/80 dark:border-[#30363d] shadow-2xs",
+            disabled && "opacity-50 pointer-events-none",
+            classNames.container
+          )}
+        >
+          {showIcon && (
+            <div className="text-stone-500 dark:text-[#8b949e] shrink-0">
+              <Type size={sizeClasses.icon} className={classNames.icon} />
+            </div>
+          )}
+
+          {minOption && (
+            <span
+              className={cn(
+                "text-stone-400 dark:text-stone-500 font-mono text-[9px] select-none shrink-0",
+                classNames.sliderMinMax
+              )}
+              aria-hidden="true"
+            >
+              {getOptionShortLabel(minOption)}
+            </span>
+          )}
+
+          <input
+            type="range"
+            min={0}
+            max={resolvedOptions.length - 1}
+            step={1}
+            value={currentIndex >= 0 ? currentIndex : 0}
+            disabled={disabled}
+            onChange={(e) => {
+              const idx = Number(e.target.value);
+              const target = resolvedOptions[idx];
+              if (target) {
+                onChange(target.id);
+              }
+            }}
+            aria-label={labels.ariaLabel || ariaLabel}
+            aria-valuemin={0}
+            aria-valuemax={resolvedOptions.length - 1}
+            aria-valuenow={currentIndex >= 0 ? currentIndex : 0}
+            aria-valuetext={activeOption ? String(getOptionLabel(activeOption)) : String(value)}
+            className={cn(
+              "accent-[var(--brand,#d97706)] cursor-pointer bg-stone-200 dark:bg-[#30363d] rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)]",
+              sizeClasses.sliderWidth,
+              sizeClasses.sliderHeight,
+              classNames.slider
+            )}
+          />
+
+          {maxOption && (
+            <span
+              className={cn(
+                "text-stone-400 dark:text-stone-500 font-mono text-[9px] select-none shrink-0",
+                classNames.sliderMinMax
+              )}
+              aria-hidden="true"
+            >
+              {getOptionShortLabel(maxOption)}
+            </span>
+          )}
+
+          <span
+            className={cn(
+              "font-mono font-bold text-center text-stone-800 dark:text-[#f0f3f6] select-none shrink-0 px-1.5 py-0.2 rounded-md bg-white dark:bg-[#21262d] shadow-2xs border border-stone-200/60 dark:border-[#30363d]",
+              sizeClasses.sliderValue,
+              classNames.sliderValue
+            )}
+            title={activeOption ? String(getOptionLabel(activeOption)) : undefined}
+          >
+            {activeOption ? getOptionShortLabel(activeOption) : value}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  // 4. SEGMENTED CONTROL / BUTTONS VARIANT (Default)
   return (
     <div
       className={cn("inline-flex items-center gap-2", className, classNames.root)}

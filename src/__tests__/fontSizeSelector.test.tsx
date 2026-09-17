@@ -101,4 +101,42 @@ describe("FontSizeSelector Component", () => {
     expect(DENSITY_SCALES.normal.id).toBe("normal");
     expect(DENSITY_SCALES.spacious.id).toBe("spacious");
   });
+
+  it("renders slider variant with input type range and min max aria attributes", () => {
+    const html = renderToString(
+      <FontSizeSelector
+        variant="slider"
+        value="md"
+        onChange={() => {}}
+        options={DEFAULT_SCALE_OPTIONS}
+        label="Escala de Leitura"
+        showIcon
+      />
+    );
+
+    expect(html).toContain('type="range"');
+    expect(html).toContain('min="0"');
+    expect(html).toContain(`max="${DEFAULT_SCALE_OPTIONS.length - 1}"`);
+    expect(html).toContain('aria-valuenow="2"');
+    expect(html).toContain('aria-valuetext="Medium"');
+    expect(html).toContain("Escala de Leitura");
+    expect(html).toContain("<svg");
+  });
+
+  it("supports slide alias for slider variant", () => {
+    const html = renderToString(
+      <FontSizeSelector
+        variant="slide"
+        value="normal"
+        onChange={() => {}}
+        options={DEFAULT_DENSITY_OPTIONS}
+      />
+    );
+
+    expect(html).toContain('type="range"');
+    expect(html).toContain('min="0"');
+    expect(html).toContain(`max="${DEFAULT_DENSITY_OPTIONS.length - 1}"`);
+    expect(html).toContain('aria-valuenow="1"');
+  });
 });
+
