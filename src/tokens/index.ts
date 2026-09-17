@@ -268,3 +268,86 @@ export const PAGE_FORMATS: Record<PageFormatKey, PageFormatDefinition> = {
   },
 } as const;
 
+export type FontSizeScaleKey = "xs" | "sm" | "md" | "lg" | "xl";
+
+export interface FontSizeScaleDefinition {
+  id: FontSizeScaleKey;
+  label: string;
+  shortLabel: string;
+  scaleFactor: number;
+  description: string;
+}
+
+export const FONT_SIZE_SCALES: Record<FontSizeScaleKey, FontSizeScaleDefinition> = {
+  xs: {
+    id: "xs",
+    label: "Extra Small",
+    shortLabel: "A-",
+    scaleFactor: 0.85,
+    description: "Compact text density for high-volume content",
+  },
+  sm: {
+    id: "sm",
+    label: "Small",
+    shortLabel: "A",
+    scaleFactor: 0.92,
+    description: "Slightly reduced font size",
+  },
+  md: {
+    id: "md",
+    label: "Medium",
+    shortLabel: "A",
+    scaleFactor: 1.0,
+    description: "Standard balanced text size",
+  },
+  lg: {
+    id: "lg",
+    label: "Large",
+    shortLabel: "A+",
+    scaleFactor: 1.1,
+    description: "Enlarged readable text",
+  },
+  xl: {
+    id: "xl",
+    label: "Extra Large",
+    shortLabel: "A++",
+    scaleFactor: 1.25,
+    description: "Maximum emphasis and accessibility",
+  },
+} as const;
+
+export type DensityScaleKey = "compact" | "normal" | "spacious";
+
+export interface DensityScaleDefinition {
+  id: DensityScaleKey;
+  label: string;
+  shortLabel: string;
+  scaleFactor: number;
+  description: string;
+}
+
+export const DENSITY_SCALES: Record<DensityScaleKey, DensityScaleDefinition> = {
+  compact: {
+    id: "compact",
+    label: "Compact",
+    shortLabel: "A-",
+    scaleFactor: 0.9,
+    description: "Tighter spacing and compact typography",
+  },
+  normal: {
+    id: "normal",
+    label: "Normal",
+    shortLabel: "A",
+    scaleFactor: 1.0,
+    description: "Balanced standard layout and typography",
+  },
+  spacious: {
+    id: "spacious",
+    label: "Spacious",
+    shortLabel: "A+",
+    scaleFactor: 1.1,
+    description: "Airy layout with generous typography",
+  },
+} as const;
+
+
