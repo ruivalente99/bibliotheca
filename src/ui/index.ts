@@ -18,3 +18,4 @@ export * from "./Drawer";
 export * from "./EmptyState";
 export * from "./Tabs";
 export * from "./DropdownMenu";
+export * from "./FontSizeSelector";
