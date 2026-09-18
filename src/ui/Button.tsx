@@ -23,11 +23,19 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   iconLeft?: React.ReactNode;
   /** Optional icon component rendered on the right */
   iconRight?: React.ReactNode;
+  /** Optional href to render as an anchor link */
+  href?: string;
+  /** Link target when href is present */
+  target?: string;
+  /** Link rel when href is present */
+  rel?: string;
+  /** Merges styles onto immediate child element */
+  asChild?: boolean;
   /** Granular class overrides for internal sub-elements */
   classNames?: ButtonClassNames;
 }
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = React.forwardRef<any, ButtonProps>(
   (
     {
       children,
@@ -37,6 +45,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled = false,
       iconLeft,
       iconRight,
+      href,
+      target,
+      rel,
+      asChild = false,
       className = "",
       classNames = {},
       ...props
@@ -68,26 +80,58 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       icon: "p-2 rounded-full",
     };
 
-    return (
-      <button
-        ref={ref}
-        disabled={disabled || loading}
-        aria-busy={loading}
-        className={cn(
-          baseClasses,
-          variantClasses[variant],
-          variant === "pill" ? "rounded-full" : sizeClasses[size],
-          className,
-          classNames.root
-        )}
-        {...props}
-      >
+    const combinedClassName = cn(
+      baseClasses,
+      variantClasses[variant],
+      variant === "pill" ? "rounded-full" : sizeClasses[size],
+      className,
+      classNames.root
+    );
+
+    const content = (
+      <>
         {loading && <Loader2 className={cn("w-3.5 h-3.5 animate-spin", classNames.spinner)} />}
         {!loading && iconLeft && <span className={cn("shrink-0", classNames.iconLeft)}>{iconLeft}</span>}
         {children !== undefined && children !== null && (
           <span className={cn("truncate", classNames.label)}>{children}</span>
         )}
         {!loading && iconRight && <span className={cn("shrink-0", classNames.iconRight)}>{iconRight}</span>}
+      </>
+    );
+
+    if (asChild && React.isValidElement(children)) {
+      const child = children as React.ReactElement<any>;
+      return React.cloneElement(child, {
+        ref,
+        className: cn(combinedClassName, child.props.className),
+        ...props,
+      });
+    }
+
+    if (href) {
+      return (
+        <a
+          ref={ref}
+          href={href}
+          target={target}
+          rel={rel}
+          className={combinedClassName}
+          {...(props as any)}
+        >
+          {content}
+        </a>
+      );
+    }
+
+    return (
+      <button
+        ref={ref}
+        disabled={disabled || loading}
+        aria-busy={loading}
+        className={combinedClassName}
+        {...props}
+      >
+        {content}
       </button>
     );
   }
