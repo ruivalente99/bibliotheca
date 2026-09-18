@@ -14,6 +14,13 @@ import { EmptyState } from "../ui/EmptyState";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/Tabs";
 import { AccentSelector } from "../ui/AccentSelector";
 import { ThemeProvider } from "../ui/ThemeContext";
+import { BentoGrid, BentoCard } from "../ui/BentoGrid";
+import { Kbd } from "../ui/Kbd";
+import { Avatar, AvatarGroup } from "../ui/Avatar";
+import { Skeleton } from "../ui/Skeleton";
+import { Separator } from "../ui/Separator";
+import { Timeline, TimelineItem } from "../ui/Timeline";
+import { Terminal } from "../ui/Terminal";
 
 describe("UI Components SSR rendering", () => {
   it("renders Logo container with icon and accessible attributes", () => {
@@ -205,5 +212,104 @@ describe("UI Components SSR rendering", () => {
     expect(html).toContain("Forest Emerald");
     expect(html).toContain("Burgundy Rose");
     expect(html).toContain("Obsidian Slate");
+  });
+
+  it("renders BentoGrid and BentoCard with responsive columns and slots", () => {
+    const html = renderToString(
+      <BentoGrid cols={4}>
+        <BentoCard colSpan={2} title="Card A" description="Desc A" hoverable>
+          Content A
+        </BentoCard>
+      </BentoGrid>
+    );
+    expect(html).toContain("grid");
+    expect(html).toContain("Card A");
+    expect(html).toContain("Desc A");
+    expect(html).toContain("Content A");
+    expect(html).toContain("sm:col-span-2 lg:col-span-2");
+  });
+
+  it("renders Kbd with mapped symbol keys", () => {
+    const html = renderToString(<Kbd keys={["mod", "k"]} />);
+    expect(html).toContain("<kbd");
+    expect(html).toContain("⌘");
+    expect(html).toContain("K");
+  });
+
+  it("renders Avatar with name initials and status indicator", () => {
+    const html = renderToString(
+      <Avatar name="Rui Valente" size="lg" status="online" />
+    );
+    expect(html).toContain('role="img"');
+    expect(html).toContain('aria-label="Rui Valente"');
+    expect(html).toContain("RV");
+    expect(html).toContain("bg-emerald-500");
+  });
+
+  it("renders AvatarGroup with excess badge", () => {
+    const html = renderToString(
+      <AvatarGroup max={2}>
+        <Avatar name="Alice Adams" />
+        <Avatar name="Bob Brown" />
+        <Avatar name="Charlie Clark" />
+      </AvatarGroup>
+    );
+    expect(html).toContain("+1");
+  });
+
+  it("renders Skeleton with animation and shape variants", () => {
+    const html = renderToString(
+      <Skeleton variant="circular" width={40} height={40} animation="pulse" />
+    );
+    expect(html).toContain('aria-hidden="true"');
+    expect(html).toContain("rounded-full");
+    expect(html).toContain("animate-pulse");
+    expect(html).toContain("width:40px");
+    expect(html).toContain("height:40px");
+  });
+
+  it("renders Separator with horizontal and vertical orientations", () => {
+    const hHtml = renderToString(<Separator orientation="horizontal" label="OR" decorative={false} />);
+    expect(hHtml).toContain('role="separator"');
+    expect(hHtml).toContain('aria-orientation="horizontal"');
+    expect(hHtml).toContain("OR");
+
+    const vHtml = renderToString(<Separator orientation="vertical" />);
+    expect(vHtml).toContain("w-px");
+  });
+
+  it("renders Timeline and TimelineItem with active node and dates", () => {
+    const html = renderToString(
+      <Timeline>
+        <TimelineItem
+          active
+          date="2024"
+          title="Staff Architect"
+          subtitle="Engineering Dept"
+        >
+          Key achievements summary.
+        </TimelineItem>
+      </Timeline>
+    );
+    expect(html).toContain("<ol");
+    expect(html).toContain("Staff Architect");
+    expect(html).toContain("Engineering Dept");
+    expect(html).toContain("2024");
+    expect(html).toContain("border-[var(--brand)]");
+  });
+
+  it("renders Terminal with prompt, window controls, and accessible region", () => {
+    const html = renderToString(
+      <Terminal
+        title="console"
+        prompt="$"
+        welcomeMessage="System Ready"
+      />
+    );
+    expect(html).toContain('role="region"');
+    expect(html).toContain('aria-label="Interactive Terminal"');
+    expect(html).toContain("console");
+    expect(html).toContain("System Ready");
+    expect(html).toContain("$");
   });
 });
