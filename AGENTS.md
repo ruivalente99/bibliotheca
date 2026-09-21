@@ -163,8 +163,9 @@ When refactoring or adding code, channel the **Ponytail** engineering discipline
 
 ---
 
-## 8. Commit Conventions
+## 8. Commit Conventions & Branching Policy
 
+### Commit Conventions
 Make atomic, conventional git commits:
 - `feat: <description in English>`
 - `fix: <description in English>`
@@ -174,3 +175,10 @@ Make atomic, conventional git commits:
 - `chore: <description in English>`
 
 Never include emojis in commit titles or commit descriptions.
+
+### Strict Branching Policy
+- **Never push directly to `main`**: Direct pushes to `main` are strictly prohibited.
+- **Always create a dedicated branch**: `git checkout -b <type>/<description>`.
+- **Pre-Push Quality Verification**: Always run `bun run typecheck`, `bun run test`, and `bun run build` before pushing.
+- **Push exclusively to the remote branch**: `git push -u origin <branch-name>`.
+- **Merge exclusively via Pull Request**: Open a PR for review and automated CI validation.
