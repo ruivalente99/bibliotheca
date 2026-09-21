@@ -26,3 +26,4 @@ export * from "./Skeleton";
 export * from "./Separator";
 export * from "./Timeline";
 export * from "./Terminal";
+export * from "./ProjectPreview";

@@ -82,6 +82,14 @@ Themes are managed via `ThemeProvider` (`src/ui/ThemeContext.tsx`) and controlle
 - `ToastContext`: Floating notification manager and asynchronous confirmation modal.
 - `Tooltip`: Hover and focus popover with keyboard shortcut hints.
 - `NanoBananaLogo`: Configurable geometric badge emblem with custom icon slot.
+- `BentoGrid`: Responsive dashboard grid layout with `BentoCard` slots and custom column spans.
+- `Kbd`: Semantic keyboard key cap representation for shortcuts and command palette hints.
+- `Avatar`: User and entity portrait avatar with initials fallback and status dot.
+- `Skeleton`: Content placeholder shimmer loader for progressive UI loading.
+- `Separator`: Accessible horizontal and vertical visual divider with optional text label.
+- `Timeline`: Chronological career and event timeline with `TimelineItem` nodes and date indicators.
+- `Terminal`: Interactive command prompt interface with customizable commands and ANSI support.
+- `ProjectPreview`: 16:9 / 4:3 / auto showcase card featuring window mockup bar, atmospheric accent glow, dot/line grid, technology badges, split preview pane, and standalone vector SVG export utility (`generateProjectPreviewSvg`).
 
 ### Editor Subsystem (`src/editor/`):
 - `BuilderHeader`: Top app bar with titles, subtitle, status badge, action buttons, and utility slots.

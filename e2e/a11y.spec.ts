@@ -20,6 +20,7 @@ test.describe("Accessibility (a11y) WCAG 2.1 Audits", () => {
     { id: "editor-builderheader--papyrus-resume", name: "BuilderHeader" },
     { id: "editor-sectioncard--default", name: "SectionCard" },
     { id: "preview-dockabletoolbar--interactive-docking", name: "DockableToolbar" },
+    { id: "ui-projectpreview--default", name: "ProjectPreview" },
   ];
 
   for (const story of storiesToAudit) {

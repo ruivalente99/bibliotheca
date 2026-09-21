@@ -21,6 +21,7 @@ import { Skeleton } from "../ui/Skeleton";
 import { Separator } from "../ui/Separator";
 import { Timeline, TimelineItem } from "../ui/Timeline";
 import { Terminal } from "../ui/Terminal";
+import { ProjectPreview, generateProjectPreviewSvg } from "../ui/ProjectPreview";
 
 describe("UI Components SSR rendering", () => {
   it("renders Logo container with icon and accessible attributes", () => {
@@ -311,5 +312,46 @@ describe("UI Components SSR rendering", () => {
     expect(html).toContain("console");
     expect(html).toContain("System Ready");
     expect(html).toContain("$");
+  });
+
+  it("renders ProjectPreview with title, tags, window controls, and accessible region", () => {
+    const html = renderToString(
+      <ProjectPreview
+        title="Bibliotheca"
+        subtitle="Component System"
+        description="Offline-first document editor core."
+        tags={["React 19", "Tailwind CSS", { label: "Bun", accent: "amber" }]}
+        accent="amber"
+        windowTitle="bibliotheca-preview"
+      />
+    );
+    expect(html).toContain('role="region"');
+    expect(html).toContain('aria-label="Bibliotheca project preview"');
+    expect(html).toContain("Bibliotheca");
+    expect(html).toContain("Component System");
+    expect(html).toContain("Offline-first document editor core.");
+    expect(html).toContain("React 19");
+    expect(html).toContain("Tailwind CSS");
+    expect(html).toContain("Bun");
+    expect(html).toContain("bibliotheca-preview");
+    expect(html).toContain("aspect-[16/9]");
+  });
+
+  it("generateProjectPreviewSvg returns valid SVG markup with 16:9 viewbox and accent tokens", () => {
+    const svg = generateProjectPreviewSvg({
+      title: "Bibliotheca",
+      subtitle: "Component System",
+      description: ["Offline-first component system", "Tailwind CSS v4"],
+      tags: [{ label: "React 19" }, { label: "Bun" }],
+      accentColor: "#d97706",
+      windowTitle: "preview-window",
+    });
+    expect(svg).toContain('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">');
+    expect(svg).toContain("Bibliotheca");
+    expect(svg).toContain("COMPONENT SYSTEM");
+    expect(svg).toContain("preview-window");
+    expect(svg).toContain("React 19");
+    expect(svg).toContain("Bun");
+    expect(svg).toContain("#d97706");
   });
 });
