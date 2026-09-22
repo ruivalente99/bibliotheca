@@ -182,3 +182,15 @@ Never include emojis in commit titles or commit descriptions.
 - **Pre-Push Quality Verification**: Always run `bun run typecheck`, `bun run test`, and `bun run build` before pushing.
 - **Push exclusively to the remote branch**: `git push -u origin <branch-name>`.
 - **Merge exclusively via Pull Request**: Open a PR for review and automated CI validation.
+
+---
+
+## 9. The Four Canonical Documentation Pillars
+
+Every repository in the ecosystem maintains up to four canonical documents, with Bibliotheca acting as the primary source of truth:
+
+1. **`AGENTS.md`**: Operational manual for AI agents and developers covering commands, build/test gates, branching policy, and Ponytail principles.
+2. **`DESIGN.md`**: Visual specification covering color systems, 7 signature accents, typography, spacing, border radii, depth, and accessibility.
+3. **`ARCHITECTURE.md`**: System architecture covering package boundaries, headless vs presentational separation, offline-first persistence, and build pipelines.
+4. **`SOUL.md`**: The philosophical manifesto and craftsmanship ethics: user sovereignty, local-first computing, editorial dignity, and technical sobriety.
+

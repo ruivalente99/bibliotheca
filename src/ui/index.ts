@@ -27,3 +27,8 @@ export * from "./Separator";
 export * from "./Timeline";
 export * from "./Terminal";
 export * from "./ProjectPreview";
+export * from "./shapeUtils";
+export * from "./Field";
+export * from "./UploadZone";
+export * from "./Progress";
+export * from "./Accordion";

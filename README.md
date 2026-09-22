@@ -12,11 +12,11 @@ Bibliotheca provides 6 modular subpath exports:
 
 | Module | Purpose | Key Exports |
 | :--- | :--- | :--- |
-| **`@ruivalente99/bibliotheca/tokens`** | Formal design tokens & theme palettes | `ACCENT_THEMES`, `ACCENT_LIST`, `SPACING_TOKENS`, `RADIUS_TOKENS`, `SHADOW_TOKENS` |
-| **`@ruivalente99/bibliotheca/ui`** | Design primitives & UI contexts | `Button`, `Badge`, `Card`, `Input`, `Textarea`, `Switch`, `Modal`, `Drawer`, `Tabs`, `DropdownMenu`, `AccentSelector`, `ThemeSelector`, `ThemeProvider`, `ToastProvider`, `EmptyState`, `Tooltip`, `NanoBananaLogo`, `cn` |
+| **`@ruivalente99/bibliotheca/tokens`** | Formal design tokens & theme palettes | `ACCENT_THEMES`, `ACCENT_LIST`, `SPACING_TOKENS`, `RADIUS_TOKENS`, `SHADOW_TOKENS`, `PAGE_FORMATS`, `FONT_SIZE_SCALES`, `diffArray` |
+| **`@ruivalente99/bibliotheca/ui`** | Design primitives & UI contexts | `Button`, `Badge`, `Card`, `Input`, `Textarea`, `Field`, `UploadZone`, `Progress`, `Accordion`, `Switch`, `Modal`, `Drawer`, `Tabs`, `DropdownMenu`, `AccentSelector`, `ThemeSelector`, `ThemeProvider`, `ToastProvider`, `EmptyState`, `Tooltip`, `BentoGrid`, `Kbd`, `Avatar`, `Skeleton`, `Separator`, `Timeline`, `Terminal`, `ProjectPreview`, `NanoBananaLogo`, `cn` |
 | **`@ruivalente99/bibliotheca/editor`** | Builder layout & sync | `SplitEditorLayout`, `useSplitRatio`, `useSectionSync`, `BuilderHeader`, `SectionCard` |
-| **`@ruivalente99/bibliotheca/preview`** | Canvas & viewport engine | `PreviewViewport`, `usePanZoom`, `DockableToolbar`, `GridOverlay`, `CanvasTooltip`, `ShortcutsLegendModal` |
-| **`@ruivalente99/bibliotheca/export`** | Export & I/O helpers | `captureNodeToCanvas`, `capturePages`, `exportNodeToPdf`, `exportNodeToImage`, `exportToJson`, `importFromJson` |
+| **`@ruivalente99/bibliotheca/preview`** | Canvas & viewport engine | `PreviewViewport`, `usePanZoom`, `DockableToolbar`, `GridOverlay`, `CanvasTooltip`, `ShortcutsLegendModal`, `getDocumentTextScaleCss`, `drawCheckerboard` |
+| **`@ruivalente99/bibliotheca/export`** | Export & I/O helpers | `captureNodeToCanvas`, `exportNodeToPdf`, `exportNodeToImage`, `exportNodeToSvg`, `encryptPdfBytes`, `enrichPdfWithPdfUa`, `prepareDarkModeElement`, `exportToJson`, `importFromJson`, `escapeLatex` |
 | **`@ruivalente99/bibliotheca/styles.css`** | Tailwind CSS v4 variables & themes | Core design token variables, dark mode rules, and 7 accent palette classes |
 
 ---
@@ -29,8 +29,6 @@ From GitHub Packages (`.npmrc`: `@ruivalente99:registry=https://npm.pkg.github.c
 
 ```bash
 bun add @ruivalente99/bibliotheca
-# or install directly from release tarball:
-bun add https://github.com/ruivalente99/bibliotheca/releases/download/v0.3.1/ruivalente99-bibliotheca-0.3.1.tgz
 # or link locally:
 bun add @ruivalente99/bibliotheca@file:../bibliotheca
 ```
@@ -93,6 +91,7 @@ All components in Bibliotheca adhere to strict design principles:
 2. **Deterministic Design Tokens**: Margins, paddings, gaps, font sizes, and borders follow an 8-point modular scale.
 3. **Complete Styling Overrides**: Every component accepts a root `className` and a fine-grained slot-based `classNames` dictionary for internal sub-element customization without fighting CSS specificity.
 4. **Strict Accessibility**: Components are audited against WCAG 2.1 Level AA requirements with 100% pass rates.
+5. **Zero Emojis**: Clean, professional documentation, tests, and commit history.
 
 ---
 
@@ -133,11 +132,14 @@ bun run pack
 
 ---
 
-## Documentation Guides
+## The Four Canonical Documentation Pillars
 
+Every repository in the ecosystem maintains up to four canonical documents, with Bibliotheca acting as the primary source of truth:
+
+- [AGENTS.md](./AGENTS.md): Operational manual for AI agents and developers covering commands, quality gates, and Ponytail principles.
 - [DESIGN.md](./DESIGN.md): Detailed specification of tokens, colors, spacing, typography, and accessibility.
-- [ARCHITECTURE.md](./ARCHITECTURE.md): Architectural layout, subsystem boundaries, and state synchronization.
-- [AGENTS.md](./AGENTS.md): Agent reference manual for automated maintenance and LLM interactions.
+- [ARCHITECTURE.md](./ARCHITECTURE.md): System architecture, subsystem boundaries, and state synchronization.
+- [SOUL.md](./SOUL.md): Philosophical manifesto on user sovereignty, local-first computing, editorial dignity, and technical sobriety.
 
 ---
 

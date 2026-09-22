@@ -4,3 +4,5 @@ export * from "./GridOverlay";
 export * from "./ShortcutsLegendModal";
 export * from "./DockableToolbar";
 export * from "./PreviewViewport";
+export * from "./textScale";
+export * from "./checkerboard";
