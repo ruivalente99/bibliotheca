@@ -147,3 +147,69 @@ All Bibliotheca components are audited against WCAG 2.1 AA requirements:
   - Buttons and Inputs include `aria-busy`, `aria-invalid`, `aria-describedby` when errors or loaders are present.
 - High-Visibility Focus Rings: Every interactive element features `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)] focus-visible:ring-offset-2`.
 - Color Independence: Status states (success, warning, error) pair color with distinct icons (`CheckCircle2`, `AlertCircle`, `Info`) so meaning is never communicated solely by hue.
+
+---
+
+## 8. Document Geometry & Page Formats
+
+Bibliotheca establishes calibrated page format metrics for both canvas rendering and physical print/export:
+
+| Format ID | Label | Pixel Dimensions (96 DPI) | Metric (mm / px) | Target Application |
+| :--- | :--- | :--- | :--- | :--- |
+| `a4` | Standard A4 | `794px × 1123px` | `210mm × 297mm` | Resumes, academic reports, CVs, invoices |
+| `letter` | US Letter | `816px × 1056px` | `215.9mm × 279.4mm`| North American documentation |
+| `ceremonial`| Ceremonial | `756px × 907px` | `200mm × 240mm` | Official acts, decrees, and institutional minutes |
+| `square512`| Square Canvas | `512px × 512px` | `512px × 512px` | WhatsApp stickers, profile emblems, app icons |
+| `slide16x9`| Slide Presentation | `960px × 540px` | `16:9 ratio` | Executive slide decks and project previews |
+
+---
+
+## 9. Component Inventory & Dual-Tier Slot Customization
+
+Every visual component in Bibliotheca accepts a root `className` and an optional `classNames` slot dictionary for granular internal styling without CSS specificity conflicts:
+
+### Form & Input Controls
+- `Input`: Form input with label, prefix/suffix icons, helper caption, and clear action.
+- `Textarea`: Multi-line text field with optional auto-resize and character count.
+- `Field`: Accessible wrapper linking `<label>`, hints, error states, and inputs via ARIA.
+- `UploadZone`: Accessible drag-and-drop file upload area with preview, MIME validation, and loading indicators.
+- `Switch`: Accessible toggle switch (`role="switch"`).
+- `FontSizeSelector`: Typography density controller with segmented, stepper, dropdown, and slider variants.
+
+### Layout & Surface Containers
+- `Card`: Structured surface container with `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`.
+- `BentoGrid`: Responsive dashboard grid layout with `BentoCard` slots and column spans.
+- `SplitEditorLayout`: Two-pane responsive editor workbench with draggable ratio separator and mobile tab switching.
+- `SectionCard`: Collapsible form section card with drag handles, status badges, and synchronized highlight ring.
+- `Separator`: Accessible horizontal and vertical visual divider with optional text label.
+- `Accordion`: WAI-ARIA collapsible panel group with smooth expand/collapse animations.
+
+### Navigation, Overlays & Feedback
+- `Modal`: Accessible dialog dialog with focus trap, backdrop blur, and Escape dismissal.
+- `Drawer`: Slide-out sheet panel (`right`, `left`, `bottom`) for inspectors and secondary settings.
+- `Tabs`: Accessible tabbed navigation (`TabsList`, `TabsTrigger`, `TabsContent`).
+- `DropdownMenu`: Contextual popup menu with keyboard navigation.
+- `Progress`: Accessible determinate and indeterminate progress bar (`role="progressbar"`).
+- `Tooltip`: Hover and keyboard focus popover with shortcut hints.
+- `ToastContext`: Floating notification manager and confirmation modal.
+- `EmptyState`: Placeholder for unconfigured sections or empty search results.
+
+### Identity & Data Display
+- `Avatar`: User and entity portrait avatar with initials fallback and status dot.
+- `Badge`: Status tags and category chips with dot indicators.
+- `Kbd`: Semantic keyboard keycap representation for command palette shortcuts.
+- `Skeleton`: Content placeholder shimmer loader for progressive UI loading.
+- `Timeline`: Chronological career and event timeline with `TimelineItem` nodes.
+- `Terminal`: Interactive command prompt interface with customizable commands.
+- `ProjectPreview`: 16:9 / 4:3 / auto showcase card featuring window mockup bar, atmospheric accent glow, and standalone vector SVG export utility.
+- `ThemeSelector` & `AccentSelector`: Interactive theme mode and 7-palette color selectors.
+- `NanoBananaLogo` & `Logo`: Configurable geometric badge emblem with custom icon slots.
+
+---
+
+## 10. The Four Canonical Documentation Pillars
+
+1. **`AGENTS.md`**: Operational manual for AI agents and developers covering commands, build/test gates, branching policy, and Ponytail principles.
+2. **`DESIGN.md`**: Visual specification covering color systems, 7 signature accents, typography, spacing, border radii, depth, and accessibility.
+3. **`ARCHITECTURE.md`**: System architecture covering package boundaries, headless vs presentational separation, offline-first persistence, and build pipelines.
+4. **`SOUL.md`**: The philosophical manifesto and craftsmanship ethics: user sovereignty, local-first computing, editorial dignity, and technical sobriety.

@@ -19,6 +19,10 @@ export interface PreviewViewportProps {
   docWidth?: number;
   /** Document page height in pixels (e.g. 1123 for A4 at 96 DPI) */
   docHeight?: number;
+  /** Number of discrete pages in the document. Default: 1 */
+  pageCount?: number;
+  /** Gap between pages in pixels for multi-page layouts. Default: 48 */
+  pageGap?: number;
   /** Pan and zoom configuration options */
   panZoomOptions?: UsePanZoomOptions;
   /** Whether the alignment grid is visible. Controlled or default false */
@@ -29,17 +33,11 @@ export interface PreviewViewportProps {
   safetyMarginPx?: number;
   /** Whether to render a transparency checkerboard background */
   checkerboard?: boolean;
-  /** Callback when grid visibility is toggled */
   onToggleGrid?: () => void;
-  /** Initial dock edge position for the floating toolbar */
   defaultDockEdge?: DockEdge;
-  /** Extra export action buttons rendered in the toolbar */
   toolbarActions?: React.ReactNode;
-  /** Configurable labels for toolbar buttons and tooltips */
   toolbarLabels?: DockableToolbarLabels;
-  /** Optional keyboard shortcuts list displayed in help modal */
   shortcuts?: ShortcutItem[];
-  /** Ref to forward to the capture container if needed */
   captureRef?: React.RefObject<HTMLDivElement | null>;
   className?: string;
   classNames?: PreviewViewportClassNames;
@@ -49,6 +47,8 @@ export function PreviewViewport({
   children,
   docWidth = 794,
   docHeight = 1123,
+  pageCount = 1,
+  pageGap = 48,
   panZoomOptions,
   showGrid = false,
   gridVariant = "dots",
@@ -63,6 +63,11 @@ export function PreviewViewport({
   className = "",
   classNames = {},
 }: PreviewViewportProps) {
+  const effectiveDocHeight =
+    pageCount > 1
+      ? docHeight * pageCount + (pageCount - 1) * pageGap
+      : docHeight;
+
   const {
     zoom,
     pan,
@@ -83,7 +88,7 @@ export function PreviewViewport({
     handleWheel,
   } = usePanZoom({
     docWidth,
-    docHeight,
+    docHeight: effectiveDocHeight,
     ...panZoomOptions,
   });
 

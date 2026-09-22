@@ -228,7 +228,7 @@ export const SHADOW_TOKENS = {
   xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
 } as const;
 
-export type PageFormatKey = "a4" | "letter" | "square512";
+export type PageFormatKey = "a4" | "letter" | "square512" | "ceremonial" | "slide16x9";
 
 export interface PageFormatDefinition {
   id: PageFormatKey;
@@ -259,11 +259,27 @@ export const PAGE_FORMATS: Record<PageFormatKey, PageFormatDefinition> = {
     widthMm: 215.9,
     heightMm: 279.4,
   },
+  ceremonial: {
+    id: "ceremonial",
+    label: "Ceremonial (200x240mm)",
+    widthPx: 756,
+    heightPx: 907,
+    unit: "mm",
+    widthMm: 200,
+    heightMm: 240,
+  },
   square512: {
     id: "square512",
     label: "Square (512x512)",
     widthPx: 512,
     heightPx: 512,
+    unit: "px",
+  },
+  slide16x9: {
+    id: "slide16x9",
+    label: "Slide (16:9)",
+    widthPx: 960,
+    heightPx: 540,
     unit: "px",
   },
 } as const;
