@@ -4,3 +4,7 @@ export * from "./imageExport";
 export * from "./jsonIO";
 export * from "./latex";
 export * from "./canvas";
+export * from "./pdfSecurity";
+export * from "./pdfUa";
+export * from "./svgExport";
+export * from "./darkModeFilter";

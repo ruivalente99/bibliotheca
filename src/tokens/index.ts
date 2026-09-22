@@ -350,4 +350,4 @@ export const DENSITY_SCALES: Record<DensityScaleKey, DensityScaleDefinition> = {
   },
 } as const;
 
-
+export * from "./diff";
