@@ -44,6 +44,11 @@
       "import": "./dist/export/index.js",
       "require": "./dist/export/index.cjs"
     },
+    "./auth": {
+      "types": "./dist/auth/index.d.ts",
+      "import": "./dist/auth/index.js",
+      "require": "./dist/auth/index.cjs"
+    },
     "./styles.css": "./src/styles.css"
   },
   "files": [

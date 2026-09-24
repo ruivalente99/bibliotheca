@@ -19,7 +19,7 @@ All components, hooks, and utilities must follow these immutable principles:
 
 ## 2. Package Entrypoints & Subpaths
 
-Bibliotheca exports six dedicated subpaths declared in `package.json` and bundled by `tsup`:
+Bibliotheca exports seven dedicated subpaths declared in `package.json` and bundled by `tsup`:
 
 ```
 @ruivalente99/bibliotheca
@@ -28,6 +28,7 @@ Bibliotheca exports six dedicated subpaths declared in `package.json` and bundle
 ├── /editor      -> Editor workbench layout, header, section cards, split ratio, section sync
 ├── /preview     -> A4 document preview viewport, pan/zoom engine, dockable toolbar, grid overlay
 ├── /export      -> High-DPI DOM capture, vector PDF generation, PNG export, JSON serialization
+├── /auth        -> Extensible auth forms (password, QR, forgot password), Web Crypto, rate limiting, NextAuth
 └── /styles.css  -> Tailwind CSS v4 theme variables, dark mode styles, and accent palette definitions
 ```
 
@@ -110,6 +111,16 @@ Themes are managed via `ThemeProvider` (`src/ui/ThemeContext.tsx`) and controlle
 - `captureNodeToCanvas`: High-DPI DOM rasterizer using `modern-screenshot`.
 - `exportNodeToImage`: Client-side PNG/JPEG image downloader.
 - `exportToJson` / `importFromJson`: Client-side JSON file serialization and parsing.
+
+### Auth Subsystem (`src/auth/`):
+- `AuthCard`: Centered card container with slots for logo, title, description, content, and footer.
+- `LoginForm`: Business-agnostic login interface supporting `password-only`, `email-password`, and `username-password` modes, rate-limit lockout display, and slots for QR code and forgot password actions.
+- `QrLoginForm`: QR code login interface supporting camera scanner slot, state transitions (`idle`, `verifying`, `success`, `error`), and manual token fallback.
+- `ForgotPasswordForm`: Multi-step password recovery flow (`request` -> `verify` -> `reset`).
+- `RateLimiter` & `createRateLimiter`: In-memory sliding-window rate limiter with client IP extraction and lockout timers.
+- `verifyConstantTime` & `safeCompare`: Universal Web Crypto timing-safe string comparison preventing timing attacks.
+- `createSignedToken` & `verifySignedToken`: HMAC-SHA256 authenticated token generation and validation.
+- `createRateLimitedAuthorize` & `createStandardSessionCallbacks`: Drop-in NextAuth / Auth.js credentials wrapper and standard session synchronizer.
 
 ---
 

@@ -8,6 +8,7 @@ export default defineConfig({
     "editor/index": "src/editor/index.ts",
     "preview/index": "src/preview/index.ts",
     "export/index": "src/export/index.ts",
+    "auth/index": "src/auth/index.ts",
   },
   format: ["esm", "cjs"],
   dts: true,
